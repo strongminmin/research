@@ -51,12 +51,7 @@ class _CheckInState extends State<CheckIn> {
                   decoration: BoxDecoration(
                       color: _check ? Colors.grey : Colors.blue[400],
                       borderRadius: BorderRadius.circular(18),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          blurRadius: 2,
-                        )
-                      ]),
+                      ),
                   child: Center(
                     child: Text(
                       _check ? '已打卡' : '打卡',

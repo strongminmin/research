@@ -8,7 +8,6 @@ class MicroPage extends StatelessWidget {
     num screenWidth = MediaQuery.of(context).size.width;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8),
-      color: Colors.white,
       width: screenWidth,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,

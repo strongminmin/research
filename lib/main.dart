@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Index(title: '研忧'),
+      home: Index(title: '研优'),
     );
   }
 }
