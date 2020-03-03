@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:yanyou/components/MessageCircle/CommentList.dart';
 
 class MessageItem extends StatelessWidget {
   MessageItem({Key key}) : super(key: key);
@@ -20,6 +21,17 @@ class MessageItem extends StatelessWidget {
 
   void supportHander() {
     print('点赞');
+  }
+
+  Function openCommentSheet(BuildContext context) {
+    return () {
+      showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return CommentList();
+        },
+      );
+    };
   }
 
   @override
@@ -130,56 +142,60 @@ class MessageItem extends StatelessWidget {
 
   // 消息的底部信息-点赞及评论
   Widget messageFooter() {
-    return Container(
-      margin: EdgeInsets.only(top: 14),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          Row(
+    return Builder(
+      builder: (context) {
+        return Container(
+          margin: EdgeInsets.only(top: 14),
+          child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              GestureDetector(
-                onTap: jumpDetailsPage,
-                child: Icon(
-                  Icons.chat,
-                  size: 20,
-                  color: Colors.grey[400],
-                ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: openCommentSheet(context),
+                    child: Icon(
+                      Icons.chat,
+                      size: 20,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 2),
+                    child: Text(
+                      '123',
+                      style: TextStyle(fontSize: 12, color: Colors.grey[400]),
+                    ),
+                  )
+                ],
               ),
-              Container(
-                margin: EdgeInsets.only(left: 2),
-                child: Text(
-                  '123',
-                  style: TextStyle(fontSize: 12, color: Colors.grey[400]),
-                ),
-              )
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: supportHander,
+                    child: Icon(
+                      Icons.thumb_up,
+                      size: 20,
+                      color: true ? Colors.blue[400] : Colors.grey[400],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 2),
+                    child: Text(
+                      '123',
+                      style: TextStyle(fontSize: 12, color: Colors.grey[400]),
+                    ),
+                  )
+                ],
+              ),
             ],
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              GestureDetector(
-                onTap: supportHander,
-                child: Icon(
-                  Icons.thumb_up,
-                  size: 20,
-                  color: true ? Colors.blue[400] : Colors.grey[400],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 2),
-                child: Text(
-                  '123',
-                  style: TextStyle(fontSize: 12, color: Colors.grey[400]),
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 

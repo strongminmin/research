@@ -1,10 +1,17 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:yanyou/pages/index.dart';
+import 'package:yanyou/routes/Application.dart';
+import 'package:yanyou/routes/Routes.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  MyApp() {
+    final router = Router();
+    Routes.configureRoutes(router);
+    Application.router = router;
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -12,6 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      onGenerateRoute: Application.router.generator,
       home: Index(title: '研优'),
     );
   }

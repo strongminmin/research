@@ -1,8 +1,11 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:flutter_easyrefresh/material_header.dart';
 import 'package:yanyou/components/MessageCircle/MessageItem.dart';
+import 'package:yanyou/routes/Application.dart';
+import 'package:yanyou/routes/Routes.dart';
 
 class MessageCircle extends StatefulWidget {
   _MessageCircleState createState() => _MessageCircleState();
@@ -10,7 +13,11 @@ class MessageCircle extends StatefulWidget {
 
 class _MessageCircleState extends State<MessageCircle> {
   void jumpReleaseMessagePage() {
-    print('跳转到发布页面');
+    Application.router.navigateTo(
+      context,
+      Routes.releaseMessagePage,
+      transition: TransitionType.native,
+    );
   }
 
   Future<void> onLoadHandler() async {}

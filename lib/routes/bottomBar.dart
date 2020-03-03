@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yanyou/pages/College.dart';
 import 'package:yanyou/pages/Home.dart';
-import 'package:yanyou/pages/MessageCircle.dart';
+import 'package:yanyou/pages/MessageCircle/MessageCircle.dart';
 import 'package:yanyou/pages/PersonalCenter.dart';
 
 List<Map> indexBottomBar = [
