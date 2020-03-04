@@ -39,6 +39,7 @@ dependencies:
   flutter_cupertino_date_picker: ^1.0.12
   loading_dialog: ^0.0.1+1
   fluro: ^1.5.2
+  webview_flutter: ^0.3.19+8
 dev_dependencies:
   flutter_test:
     sdk: flutter
