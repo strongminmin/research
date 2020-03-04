@@ -7,6 +7,7 @@ class Routes {
   static String releaseMessagePage = '/releaseMessage';
   static String advisoryDetailsPage = '/advisoryDetails';
   static String rewardPage = '/reward';
+  static String collegeDetailsPage = '/collegeDetails';
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(
       handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -22,5 +23,6 @@ class Routes {
     router.define(releaseMessagePage, handler: releaseMessageHander);
     router.define(advisoryDetailsPage, handler: advisoryDetailsHandler);
     router.define(rewardPage, handler: rewardPageHandler);
+    router.define(collegeDetailsPage, handler: collegeDetailsHandler);
   }
 }

@@ -1,5 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:yanyou/common/index.dart';
+import 'package:yanyou/pages/College/CollegeDetails.dart';
 import 'package:yanyou/pages/Home/AdvisoryDetails.dart';
 import 'package:yanyou/pages/Home/RewardPage.dart';
 import 'package:yanyou/pages/MessageCircle/ReleaseMessage.dart';
@@ -31,5 +33,16 @@ Handler rewardPageHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List> params) {
     print(params);
     return RewardPage(type: params['type'][0]);
+  },
+);
+
+// 院校详情
+Handler collegeDetailsHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    String collegeNameEncode = params['name'][0];
+    String collegeName = FluroConvertUtils.fluroCnParamsDecode(
+      collegeNameEncode,
+    );
+    return CollegeDetails(collegeName: collegeName);
   },
 );

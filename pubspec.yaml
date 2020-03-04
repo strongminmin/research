@@ -64,6 +64,13 @@ flutter:
     - assets/images/wechat.png
     - assets/images/alipay-page.jpg
     - assets/images/wechat-page.jpg
+    - assets/images/bili.png
+    - assets/images/daoshi.png
+    - assets/images/fenshuxian.png
+    - assets/images/jianzhang.png
+    - assets/images/tiaoji.png
+    - assets/images/jingyan.png
+    - assets/images/xuexiao.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
