@@ -1,3 +1,5 @@
+import 'package:yanyou/routes/Routes.dart';
+
 List<Map> microPage = [
   {
     'text': '月计划',
@@ -25,46 +27,46 @@ List<Map> collegeGrid = [
   {
     'text': '研究生院',
     'url': 'assets/images/xuexiao.png',
-    'page': '',
+    'page': Routes.graduateCollegePage,
   },
   {
     'text': '报录比',
     'url': 'assets/images/bili.png',
-    'page': '',
+    'page': Routes.reportRatioPage,
   },
   {
     'text': '考研经验',
     'url': 'assets/images/jingyan.png',
-    'page': '',
+    'page': Routes.experiencePage,
   },
   {
     'text': '直通学长',
     'url': 'assets/images/xuesheng.png',
-    'page': '',
+    'page': Routes.seniorPage,
   },
   {
     'text': '研究生导师',
     'url': 'assets/images/daoshi.png',
-    'page': '',
+    'page': Routes.totorPage,
   },
   {
     'text': '真题资料',
     'url': 'assets/images/ziyuan.png',
-    'page': '',
+    'page': Routes.resourcesPage,
   },
   {
     'text': '招生简章',
     'url': 'assets/images/jianzhang.png',
-    'page': '',
+    'page': Routes.admissionsPage,
   },
   {
     'text': '历年分数线',
     'url': 'assets/images/fenshuxian.png',
-    'page': '',
+    'page': Routes.scoreLinePage,
   },
   {
     'text': '考研调剂',
     'url': 'assets/images/tiaoji.png',
-    'page': '',
+    'page': Routes.transferPage,
   },
 ];

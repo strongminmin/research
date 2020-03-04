@@ -2,6 +2,15 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:yanyou/common/index.dart';
 import 'package:yanyou/pages/College/CollegeDetails.dart';
+import 'package:yanyou/pages/College/CollegeDetails/Admissions.dart';
+import 'package:yanyou/pages/College/CollegeDetails/Experience.dart';
+import 'package:yanyou/pages/College/CollegeDetails/GraduateCollege.dart';
+import 'package:yanyou/pages/College/CollegeDetails/ReportRatio.dart';
+import 'package:yanyou/pages/College/CollegeDetails/Resources.dart';
+import 'package:yanyou/pages/College/CollegeDetails/ScoreLine.dart';
+import 'package:yanyou/pages/College/CollegeDetails/Senior.dart';
+import 'package:yanyou/pages/College/CollegeDetails/Totor.dart';
+import 'package:yanyou/pages/College/CollegeDetails/Transfer.dart';
 import 'package:yanyou/pages/Home/AdvisoryDetails.dart';
 import 'package:yanyou/pages/Home/RewardPage.dart';
 import 'package:yanyou/pages/MessageCircle/ReleaseMessage.dart';
@@ -44,5 +53,100 @@ Handler collegeDetailsHandler = Handler(
       collegeNameEncode,
     );
     return CollegeDetails(collegeName: collegeName);
+  },
+);
+
+// 院校详情页中各项页面
+// 研究生院
+Handler collegeDetailsGraduateCollegeHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    String collegeNameEncode = params['name'][0];
+    String collegeName = FluroConvertUtils.fluroCnParamsDecode(
+      collegeNameEncode,
+    );
+    return GraduateCollege(collegeName: collegeName);
+  },
+);
+// 报录比
+Handler collegeDetailsReportRatioHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    String collegeNameEncode = params['name'][0];
+    String collegeName = FluroConvertUtils.fluroCnParamsDecode(
+      collegeNameEncode,
+    );
+    return ReportRatio(collegeName: collegeName);
+  },
+);
+// 考研经验
+Handler collegeDetailsExperienceHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    String collegeNameEncode = params['name'][0];
+    String collegeName = FluroConvertUtils.fluroCnParamsDecode(
+      collegeNameEncode,
+    );
+    return Experience(collegeName: collegeName);
+  },
+);
+// 直通学长
+Handler collegeDetailsSeniorHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    String collegeNameEncode = params['name'][0];
+    String collegeName = FluroConvertUtils.fluroCnParamsDecode(
+      collegeNameEncode,
+    );
+    return Senior(collegeName: collegeName);
+  },
+);
+
+// 研究生导师
+Handler collegeDetailsTotorHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    String collegeNameEncode = params['name'][0];
+    String collegeName = FluroConvertUtils.fluroCnParamsDecode(
+      collegeNameEncode,
+    );
+    return Totor(collegeName: collegeName);
+  },
+);
+
+// 真题资料
+Handler collegeDetailsResourcesHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    String collegeNameEncode = params['name'][0];
+    String collegeName = FluroConvertUtils.fluroCnParamsDecode(
+      collegeNameEncode,
+    );
+    return Resources(collegeName: collegeName);
+  },
+);
+
+// 招生简章
+Handler collegeDetailsAdmissonsHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    String collegeNameEncode = params['name'][0];
+    String collegeName = FluroConvertUtils.fluroCnParamsDecode(
+      collegeNameEncode,
+    );
+    return Admissions(collegeName: collegeName);
+  },
+);
+// 历年分数线
+Handler collegeDetailsScoreLineHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    String collegeNameEncode = params['name'][0];
+    String collegeName = FluroConvertUtils.fluroCnParamsDecode(
+      collegeNameEncode,
+    );
+    return ScoreLine(collegeName: collegeName);
+  },
+);
+// 考研调剂
+Handler collegeDetailsTransferHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    String collegeNameEncode = params['name'][0];
+    String collegeName = FluroConvertUtils.fluroCnParamsDecode(
+      collegeNameEncode,
+    );
+    return Transfer(collegeName: collegeName);
   },
 );
