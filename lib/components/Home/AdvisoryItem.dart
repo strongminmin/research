@@ -1,16 +1,26 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:yanyou/routes/Application.dart';
+import 'package:yanyou/routes/Routes.dart';
 
 class AdvisoryItem extends StatelessWidget {
   AdvisoryItem({Key key}) : super(key: key);
-  void jumpAdvisoryDetails() {
-    print('进入热点详情页');
+  Function jumpAdvisoryDetails(BuildContext context) {
+    return () {
+      print('进入热点详情页');
+      Application.router.navigateTo(
+        context,
+        Routes.advisoryDetailsPage,
+        transition: TransitionType.native,
+      );
+    };
   }
 
   @override
   Widget build(BuildContext context) {
     num screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
-      onTap: jumpAdvisoryDetails,
+      onTap: jumpAdvisoryDetails(context),
       child: Container(
         width: screenWidth,
         padding: EdgeInsets.all(16),

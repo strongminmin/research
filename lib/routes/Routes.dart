@@ -5,6 +5,8 @@ import 'package:yanyou/routes/RouteHanders.dart';
 class Routes {
   static String root = '/';
   static String releaseMessagePage = '/releaseMessage';
+  static String advisoryDetailsPage = '/advisoryDetails';
+  static String rewardPage = '/reward';
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(
       handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -18,5 +20,7 @@ class Routes {
     );
     router.define(root, handler: rootHandler);
     router.define(releaseMessagePage, handler: releaseMessageHander);
+    router.define(advisoryDetailsPage, handler: advisoryDetailsHandler);
+    router.define(rewardPage, handler: rewardPageHandler);
   }
 }

@@ -39,7 +39,6 @@ dependencies:
   flutter_cupertino_date_picker: ^1.0.12
   loading_dialog: ^0.0.1+1
   fluro: ^1.5.2
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -60,6 +59,11 @@ flutter:
     - assets/images/jh.png
     - assets/images/xuesheng.png
     - assets/images/ziyuan.png
+    - assets/images/reward.png
+    - assets/images/alipay.png
+    - assets/images/wechat.png
+    - assets/images/alipay-page.jpg
+    - assets/images/wechat-page.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

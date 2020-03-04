@@ -7,7 +7,7 @@ class Index extends StatefulWidget {
   _IndexState createState() => _IndexState();
 }
 
-class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
+class _IndexState extends State<Index> {
   PageController _pageController;
   int _pageIndex = 0;
   @override
@@ -52,8 +52,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
         onTap: _onBottomNavigationBarTap,
       ),
       body: PageView.builder(
-        onPageChanged: _onPageChangeHandler,
         controller: _pageController,
+        onPageChanged: _onPageChangeHandler,
         itemCount: indexBottomBar.length,
         itemBuilder: (context, index) {
           return indexBottomBar[index]['page'];
