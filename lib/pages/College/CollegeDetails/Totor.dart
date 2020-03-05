@@ -7,13 +7,16 @@ class Totor extends StatefulWidget {
 }
 
 class _TotorState extends State<Totor> {
+  String platform;
   @override
   void initState() {
     super.initState();
+
     fetchRequest();
   }
 
   Future<void> fetchRequest() async {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
