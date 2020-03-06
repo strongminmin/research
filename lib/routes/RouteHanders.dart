@@ -14,6 +14,11 @@ import 'package:yanyou/pages/College/CollegeDetails/Transfer.dart';
 import 'package:yanyou/pages/Home/AdvisoryDetails.dart';
 import 'package:yanyou/pages/Home/RewardPage.dart';
 import 'package:yanyou/pages/MessageCircle/ReleaseMessage.dart';
+import 'package:yanyou/pages/PersonalCenter/PersonalItem/Feedback.dart';
+import 'package:yanyou/pages/PersonalCenter/PersonalItem/History.dart';
+import 'package:yanyou/pages/PersonalCenter/PersonalItem/Message.dart';
+import 'package:yanyou/pages/PersonalCenter/PersonalItem/ReleaseList.dart';
+import 'package:yanyou/pages/PersonalCenter/PersonalItem/Setup.dart';
 import 'package:yanyou/pages/index.dart';
 
 // 主页
@@ -148,5 +153,37 @@ Handler collegeDetailsTransferHandler = Handler(
       collegeNameEncode,
     );
     return Transfer(collegeName: collegeName);
+  },
+);
+
+// 个人中心各项路由
+// 我的消息
+Handler personalMessageHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    return Message();
+  },
+);
+// 我发布的
+Handler personalReleaseListHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    return ReleaseList();
+  },
+);
+// 浏览记录
+Handler personalHistoryHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    return History();
+  },
+);
+// 系统反馈
+Handler personalFeedbackHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    return SystemFeedback();
+  },
+);
+// 设置
+Handler personalSetupHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    return Setup();
   },
 );

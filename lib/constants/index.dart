@@ -75,21 +75,26 @@ List<Map> personalCenterItems = [
   {
     'text': '我的消息',
     'image': 'assets/images/xiaoxi.png',
-    'page': 'xxx',
+    'page': Routes.messagePage,
+  },
+  {
+    'text': '我发布的',
+    'image': 'assets/images/release.png',
+    'page': Routes.releaseListPage,
   },
   {
     'text': '浏览记录',
     'image': 'assets/images/jilu.png',
-    'page': 'xxx',
+    'page': Routes.historyPage,
   },
   {
     'text': '系统反馈',
     'image': 'assets/images/fankui.png',
-    'page': 'xxx',
+    'page': Routes.feedbackPage,
   },
   {
     'text': '设置',
     'image': 'assets/images/setting.png',
-    'page': 'xxx',
+    'page': Routes.setupPage,
   },
 ];

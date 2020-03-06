@@ -1,5 +1,7 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:yanyou/constants/index.dart';
+import 'package:yanyou/routes/Application.dart';
 
 class Content extends StatelessWidget {
   Content({Key key}) : super(key: key);
@@ -18,7 +20,13 @@ class Content extends StatelessWidget {
       // bool isSystemMessage = item['text'] == '系统消息' && tips != 0 ? true : false;
       return Builder(builder: (BuildContext context) {
         return GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Application.router.navigateTo(
+              context,
+              item['page'],
+              transition: TransitionType.native,
+            );
+          },
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             margin: EdgeInsets.only(top: 2),

@@ -4,9 +4,12 @@ import 'package:yanyou/routes/RouteHanders.dart';
 
 class Routes {
   static String root = '/';
+  // 发布说说
   static String releaseMessagePage = '/releaseMessage';
+  // 热点相关
   static String advisoryDetailsPage = '/advisoryDetails';
   static String rewardPage = '/reward';
+  // 院校相关
   static String collegeDetailsPage = '/collegeDetails';
   static String graduateCollegePage = '$collegeDetailsPage/graduateCollege';
   static String reportRatioPage = '$collegeDetailsPage/reportRatio';
@@ -17,6 +20,13 @@ class Routes {
   static String admissionsPage = '$collegeDetailsPage/admissions';
   static String scoreLinePage = '$collegeDetailsPage/scoreLine';
   static String transferPage = '$collegeDetailsPage/transfer';
+  // 个人中心相关
+  static String messagePage = 'personal/message';
+  static String historyPage = 'personal/history';
+  static String feedbackPage = 'personal/feedback';
+  static String setupPage = 'personal/setup';
+  static String releaseListPage = 'personal/release';
+
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(
       handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -83,5 +93,15 @@ class Routes {
       transferPage,
       handler: collegeDetailsTransferHandler,
     );
+    // 个人中心-我的消息
+    router.define(messagePage, handler: personalMessageHandler);
+    // 个人中心—我发布的
+    router.define(releaseListPage, handler: personalReleaseListHandler);
+    // 个人中心-浏览记录
+    router.define(historyPage, handler: personalHistoryHandler);
+    // 个人中心-系统反馈
+    router.define(feedbackPage, handler: personalFeedbackHandler);
+    // 个人中心-设置
+    router.define(setupPage, handler: personalSetupHandler);
   }
 }

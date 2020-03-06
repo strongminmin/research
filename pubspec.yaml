@@ -77,6 +77,7 @@ flutter:
     - assets/images/jilu.png
     - assets/images/fankui.png
     - assets/images/setting.png
+    - assets/images/release.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
