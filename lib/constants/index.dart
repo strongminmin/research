@@ -70,3 +70,26 @@ List<Map> collegeGrid = [
     'page': Routes.transferPage,
   },
 ];
+
+List<Map> personalCenterItems = [
+  {
+    'text': '我的消息',
+    'image': 'assets/images/xiaoxi.png',
+    'page': 'xxx',
+  },
+  {
+    'text': '浏览记录',
+    'image': 'assets/images/jilu.png',
+    'page': 'xxx',
+  },
+  {
+    'text': '系统反馈',
+    'image': 'assets/images/fankui.png',
+    'page': 'xxx',
+  },
+  {
+    'text': '设置',
+    'image': 'assets/images/setting.png',
+    'page': 'xxx',
+  },
+];

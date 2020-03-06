@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yanyou/pages/College/College.dart';
 import 'package:yanyou/pages/Home/Home.dart';
 import 'package:yanyou/pages/MessageCircle/MessageCircle.dart';
-import 'package:yanyou/pages/PersonalCenter.dart';
+import 'package:yanyou/pages/PersonalCenter/PersonalCenter.dart';
 
 List<Map> indexBottomBar = [
   {'icon': Icons.home, 'page': Home(), 'text': '首页'},
