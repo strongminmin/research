@@ -26,3 +26,13 @@ Future<dynamic> checkIn({
   );
   return response.data;
 }
+
+Future<dynamic> getUserChecked({
+  int userId,
+}) async {
+  Response response = await _dio.get(
+    '$BASE_URL/check/checked',
+    queryParameters: {'user_id': userId},
+  );
+  return response.data;
+}

@@ -4,6 +4,8 @@ import 'package:yanyou/routes/Application.dart';
 import 'package:yanyou/routes/Routes.dart';
 
 class CheckIn extends StatefulWidget {
+  final bool checked;
+  CheckIn({Key key, this.checked}) : super(key: key);
   _CheckInState createState() => _CheckInState();
 }
 
@@ -16,7 +18,6 @@ class _CheckInState extends State<CheckIn> {
 
   String _year = '';
   String _remainDay = '';
-  bool _check = true;
   void computeCountDown() {
     DateTime dateTime = DateTime.now();
     DateTime targetTime = DateTime(dateTime.year, 12, 23);
@@ -67,7 +68,7 @@ class _CheckInState extends State<CheckIn> {
                 onTap: () {
                   Application.router.navigateTo(
                     context,
-                    '${Routes.checkPage}?check=$_check',
+                    '${Routes.checkPage}',
                     transition: TransitionType.native,
                   );
                 },
@@ -75,12 +76,12 @@ class _CheckInState extends State<CheckIn> {
                   width: 70,
                   height: 30,
                   decoration: BoxDecoration(
-                    color: _check ? Colors.grey : Colors.blue[400],
+                    color: widget.checked ? Colors.grey : Colors.blue[300],
                     borderRadius: BorderRadius.circular(18),
                   ),
                   child: Center(
                     child: Text(
-                      _check ? '已打卡' : '打卡',
+                      widget.checked ? '已打卡' : '打卡',
                       style: TextStyle(
                         color: Colors.white,
                       ),

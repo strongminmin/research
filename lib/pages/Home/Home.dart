@@ -4,6 +4,7 @@ import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:flutter_easyrefresh/material_header.dart';
 import 'package:yanyou/api/Advisory.dart';
 import 'package:yanyou/api/Banner.dart';
+import 'package:yanyou/api/Check.dart';
 import 'package:yanyou/components/Home/AdvisoryItem.dart';
 import 'package:yanyou/components/Home/BannerSwiper.dart';
 import 'package:yanyou/components/Home/CheckIn.dart';
@@ -20,11 +21,27 @@ class _HomeState extends State<Home> {
   bool loading = true;
   int page = 1;
   int count = 3;
+  bool checked = false;
   @override
   void initState() {
     super.initState();
     requestBanner();
     requestAdvisoryList('refresh', page++, count);
+    requestCheck();
+  }
+
+  // 用户是否打卡请求
+  Future<void> requestCheck() async {
+    try {
+      var result = await getUserChecked(userId: 1);
+      if (result['noerr'] == 0) {
+        setState(() {
+          checked = result['data'];
+        });
+      }
+    } catch (err) {
+      print(err);
+    }
   }
 
   // 轮播图请求
@@ -116,7 +133,7 @@ class _HomeState extends State<Home> {
 
   List<Widget> initialHeaderWidgets(screenWidth) {
     return <Widget>[
-      CheckIn(),
+      CheckIn(checked: checked),
       BannerSwiper(bannersUrl: bannersUrl),
       MicroPage(),
       Container(
