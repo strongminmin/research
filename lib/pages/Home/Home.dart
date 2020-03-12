@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:flutter_easyrefresh/material_header.dart';
+import 'package:yanyou/api/Banner.dart';
 import 'package:yanyou/components/Home/AdvisoryItem.dart';
 import 'package:yanyou/components/Home/BannerSwiper.dart';
 import 'package:yanyou/components/Home/CheckIn.dart';
@@ -12,12 +13,34 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<String> bannersUrl = [
-    'assets/images/banner.jpg',
-    'assets/images/banner.jpg',
-    'assets/images/banner.jpg',
-    'assets/images/banner.jpg',
-  ];
+  List<String> bannersUrl = [];
+  bool loading = true;
+  @override
+  void initState() {
+    super.initState();
+    requestBanner();
+  }
+
+  Future<void> requestBanner() async {
+    try {
+      var result = await getBannerList();
+      if (result['noerr'] == 0) {
+        List<String> tempBannersUrl = result['data']
+            .map((item) {
+              return item['banner_url'];
+            })
+            .cast<String>()
+            .toList();
+        setState(() {
+          bannersUrl = tempBannersUrl;
+          loading = false;
+        });
+      }
+    } catch (err) {
+      print(err);
+    }
+  }
+
   Future<void> onLoadHandler() async {}
   Future<void> onRefreshHandler() async {}
   @override
@@ -29,19 +52,21 @@ class _HomeState extends State<Home> {
         title: Text('研优'),
         centerTitle: true,
       ),
-      body: Container(
-        width: screenWidth,
-        color: Colors.white,
-        child: EasyRefresh(
-          onLoad: onLoadHandler,
-          onRefresh: onRefreshHandler,
-          footer: MaterialFooter(),
-          header: MaterialHeader(),
-          child: ListView(
-            children: widgetsList,
-          ),
-        ),
-      ),
+      body: loading
+          ? Center(child: CircularProgressIndicator())
+          : Container(
+              width: screenWidth,
+              color: Colors.white,
+              child: EasyRefresh(
+                onLoad: onLoadHandler,
+                onRefresh: onRefreshHandler,
+                footer: MaterialFooter(),
+                header: MaterialHeader(),
+                child: ListView(
+                  children: widgetsList,
+                ),
+              ),
+            ),
     );
   }
 

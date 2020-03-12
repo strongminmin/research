@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
@@ -14,14 +15,16 @@ class BannerSwiper extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Swiper(
-          itemCount: 4,
+          itemCount: bannersUrl.length,
           autoplay: true,
           pagination: SwiperPagination(),
           itemBuilder: (BuildContext context, int index) {
-            return Image.asset(
-              'assets/images/banner.jpg',
+            return CachedNetworkImage(
               width: screenWidth,
               height: 200,
+              imageUrl: bannersUrl[index],
+              placeholder: (context, url) => CircularProgressIndicator(),
+              errorWidget: (context, url, error) => Icon(Icons.error),
               fit: BoxFit.cover,
             );
           },
