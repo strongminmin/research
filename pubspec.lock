@@ -205,6 +205,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.6.3+4"
+  intl:
+    dependency: "direct main"
+    description:
+      name: intl
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.16.1"
   loading:
     dependency: "direct main"
     description:
@@ -345,6 +352,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.1.2+4"
+  simple_gesture_detector:
+    dependency: transitive
+    description:
+      name: simple_gesture_detector
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.4"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -392,6 +406,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.2.0"
+  table_calendar:
+    dependency: "direct main"
+    description:
+      name: table_calendar
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.2.2"
   term_glyph:
     dependency: transitive
     description:

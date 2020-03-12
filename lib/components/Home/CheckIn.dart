@@ -1,14 +1,39 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:yanyou/routes/Application.dart';
+import 'package:yanyou/routes/Routes.dart';
 
 class CheckIn extends StatefulWidget {
   _CheckInState createState() => _CheckInState();
 }
 
 class _CheckInState extends State<CheckIn> {
-  String _year = '2021';
-  String _remainDay = '292';
+  @override
+  void initState() {
+    super.initState();
+    computeCountDown();
+  }
+
+  String _year = '';
+  String _remainDay = '';
   bool _check = true;
+  void computeCountDown() {
+    DateTime dateTime = DateTime.now();
+    DateTime targetTime = DateTime(dateTime.year, 12, 23);
+    DateTime nextTargetTime = DateTime(dateTime.year + 1, 12, 23);
+    Duration diff = dateTime.difference(targetTime);
+    int day = diff.inDays;
+    if (day > 0) {
+      Duration diffNextTarget = dateTime.difference(nextTargetTime);
+      int nextTargetDay = diffNextTarget.inDays;
+      _year = (dateTime.year + 2).toString();
+      _remainDay = (-nextTargetDay).toString();
+    } else {
+      _remainDay = (-day).toString();
+      _year = (dateTime.year + 1).toString();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,16 +67,17 @@ class _CheckInState extends State<CheckIn> {
                 onTap: () {
                   Application.router.navigateTo(
                     context,
-                    'checkin?check=$_check',
+                    '${Routes.checkPage}?check=$_check',
+                    transition: TransitionType.native,
                   );
                 },
                 child: Container(
                   width: 70,
                   height: 30,
                   decoration: BoxDecoration(
-                      color: _check ? Colors.grey : Colors.blue[400],
-                      borderRadius: BorderRadius.circular(18),
-                      ),
+                    color: _check ? Colors.grey : Colors.blue[400],
+                    borderRadius: BorderRadius.circular(18),
+                  ),
                   child: Center(
                     child: Text(
                       _check ? '已打卡' : '打卡',

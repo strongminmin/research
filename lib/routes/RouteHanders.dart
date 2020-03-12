@@ -12,6 +12,7 @@ import 'package:yanyou/pages/College/CollegeDetails/Senior.dart';
 import 'package:yanyou/pages/College/CollegeDetails/Totor.dart';
 import 'package:yanyou/pages/College/CollegeDetails/Transfer.dart';
 import 'package:yanyou/pages/Home/AdvisoryDetails.dart';
+import 'package:yanyou/pages/Home/CheckPage.dart';
 import 'package:yanyou/pages/Home/RewardPage.dart';
 import 'package:yanyou/pages/MessageCircle/ReleaseMessage.dart';
 import 'package:yanyou/pages/PersonalCenter/PersonalItem/Feedback.dart';
@@ -25,6 +26,12 @@ import 'package:yanyou/pages/index.dart';
 Handler rootHandler = Handler(
   handlerFunc: (BuildContext context, Map params) {
     return Index();
+  },
+);
+// 打卡
+Handler checkHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    return CheckPage();
   },
 );
 

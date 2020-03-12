@@ -27,6 +27,7 @@ class _HomeState extends State<Home> {
     requestAdvisoryList('refresh', page++, count);
   }
 
+  // 轮播图请求
   Future<void> requestBanner() async {
     try {
       var result = await getBannerList();
@@ -47,6 +48,7 @@ class _HomeState extends State<Home> {
     }
   }
 
+  // 热点列表请求
   Future<void> requestAdvisoryList(String type, int page, int count) async {
     try {
       var result = await getAdvisoryList(page: page, count: count);
@@ -70,10 +72,12 @@ class _HomeState extends State<Home> {
     }
   }
 
+  // 上拉加载
   Future<void> onLoadHandler() async {
     await requestAdvisoryList('load', page++, count);
   }
 
+  // 下拉刷新
   Future<void> onRefreshHandler() async {
     page = 1;
     await requestAdvisoryList('refresh', page++, count);

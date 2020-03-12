@@ -3,7 +3,10 @@ import 'package:fluro/fluro.dart';
 import 'package:yanyou/routes/RouteHanders.dart';
 
 class Routes {
+  // 首页
   static String root = '/';
+  // 打卡
+  static String checkPage = '/check';
   // 发布说说
   static String releaseMessagePage = '/releaseMessage';
   // 热点相关
@@ -40,6 +43,8 @@ class Routes {
     );
     // 首页
     router.define(root, handler: rootHandler);
+    // 打卡
+    router.define(checkPage, handler: checkHandler);
     // 发布消息
     router.define(releaseMessagePage, handler: releaseMessageHander);
     // 热点详情
