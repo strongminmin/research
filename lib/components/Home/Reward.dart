@@ -1,15 +1,19 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:yanyou/api/Advisory.dart';
 import 'package:yanyou/routes/Application.dart';
 import 'package:yanyou/routes/Routes.dart';
 
 class Reward extends StatefulWidget {
+  final int advisoryId;
+  Reward({Key key, this.advisoryId}) : super(key: key);
   _RewardState createState() => _RewardState();
 }
 
 class _RewardState extends State<Reward> {
   Function callPay(String type) {
     return () async {
+      advisoryReward(advisoryId: widget.advisoryId);
       Application.router.pop(context);
       if (type == 'alipay') {
         Application.router.navigateTo(

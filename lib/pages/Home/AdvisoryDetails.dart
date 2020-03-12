@@ -1,24 +1,54 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:yanyou/api/Advisory.dart';
 import 'package:yanyou/components/Home/Reward.dart';
+import 'package:yanyou/models/AdvisoryMOdel.dart';
 
 class AdvisoryDetails extends StatefulWidget {
-  AdvisoryDetails({Key key}) : super(key: key);
+  final int advisoryId;
+  AdvisoryDetails({Key key, this.advisoryId}) : super(key: key);
   _AdvisoryDetailsState createState() => _AdvisoryDetailsState();
 }
 
-Function showRewardSheet(BuildContext context) {
-  return () {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Reward();
-      },
-    );
-  };
-}
-
 class _AdvisoryDetailsState extends State<AdvisoryDetails> {
+  AdvisoryModel advisoryModel;
+  @override
+  void initState() {
+    super.initState();
+    fetchRequest();
+  }
+
+  Future<void> fetchRequest() async {
+    try {
+      var result = await getAdvisoryDetails(
+        userId: 1,
+        advisoryId: widget.advisoryId,
+      );
+      if (result['noerr'] == 0) {
+        AdvisoryModel tempAdvisoryModel = AdvisoryModel.fromJson(
+          result['data'],
+        );
+        setState(() {
+          advisoryModel = tempAdvisoryModel;
+        });
+      }
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  Function showRewardSheet(BuildContext context) {
+    return () {
+      showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Reward(advisoryId: advisoryModel.advisoryId);
+        },
+      );
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     num screenWidth = MediaQuery.of(context).size.width;
@@ -28,23 +58,23 @@ class _AdvisoryDetailsState extends State<AdvisoryDetails> {
         title: Text('热点详情'),
         centerTitle: true,
       ),
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        padding: EdgeInsets.only(bottom: 16),
-        color: Colors.white,
-        child: ListView(
-          children: <Widget>[
-            advisoryHander(screenWidth),
-            paragraph(),
-            paragraph(),
-            paragraph(),
-            paragraph(),
-            paragraph(),
-            reward(),
-          ],
-        ),
-      ),
+      body: advisoryModel == null
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Container(
+              width: screenWidth,
+              height: screenHeight,
+              padding: EdgeInsets.only(bottom: 16),
+              color: Colors.white,
+              child: ListView(
+                children: <Widget>[
+                  advisoryHander(screenWidth),
+                  advisoryContent(screenWidth),
+                  reward(),
+                ],
+              ),
+            ),
     );
   }
 
@@ -67,7 +97,7 @@ class _AdvisoryDetailsState extends State<AdvisoryDetails> {
         width: screenWidth,
         height: 140,
         fit: BoxFit.cover,
-        imageUrl: 'http://kimvoice.oss-cn-beijing.aliyuncs.com/voice/1.png',
+        imageUrl: advisoryModel.advisoryBanner,
         placeholder: (context, url) => CircularProgressIndicator(),
         errorWidget: (context, url, error) => Icon(Icons.error),
       ),
@@ -79,7 +109,7 @@ class _AdvisoryDetailsState extends State<AdvisoryDetails> {
       padding: EdgeInsets.symmetric(horizontal: 16),
       margin: EdgeInsets.only(top: 8),
       child: Text(
-        '扩招18.9万，考研族上岸容易吗容易吗?',
+        advisoryModel.advisoryTitle,
         style: TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.bold,
@@ -99,39 +129,19 @@ class _AdvisoryDetailsState extends State<AdvisoryDetails> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text('发布于3分钟前', style: style),
-          Text('2000人访问', style: style),
-          Text('来源：考研日报', style: style),
+          Text('发布于${advisoryModel.createTime}', style: style),
+          Text('${advisoryModel.advisoryAccess}人访问', style: style),
+          Text('来源：${advisoryModel.advisorySource}', style: style),
         ],
       ),
     );
   }
 
-  Widget paragraph() {
+  Widget advisoryContent(num screenWidth) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16),
       margin: EdgeInsets.only(top: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 4),
-            child: Text(
-              '3、支持和鼓励事业单位专业技术人员离岗创新创业',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Text(
-            '单位专业技术人员带着科研项目和成果离岗创办科技型企业或者到企业开展创新工作（简称离岗创业），是充分发挥市场在人才资源配置中的决定性作用，提高人才流动性，最大限度激发和释放创新创业活力的重要举措，有助于科技创新成果快速实现产业化，转化为现实生产力。',
-            style: TextStyle(
-              fontSize: 16,
-            ),
-          ),
-        ],
-      ),
+      child: Html(data: advisoryModel.advisoryContent),
     );
   }
 
@@ -159,7 +169,7 @@ class _AdvisoryDetailsState extends State<AdvisoryDetails> {
               ),
             ),
           ),
-          Text('点击打赏'),
+          Text('已经有${advisoryModel.advisoryReward}人打赏'),
         ],
       ),
     );

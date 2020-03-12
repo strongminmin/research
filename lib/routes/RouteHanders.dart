@@ -38,7 +38,9 @@ Handler releaseMessageHander = Handler(
 // 热点详情
 Handler advisoryDetailsHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List> params) {
-    return AdvisoryDetails();
+    print(params);
+    int id = int.parse(params['advisoryId'][0]);
+    return AdvisoryDetails(advisoryId: id);
   },
 );
 

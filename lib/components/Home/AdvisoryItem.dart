@@ -1,16 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:yanyou/models/AdvisoryModel.dart';
 import 'package:yanyou/routes/Application.dart';
 import 'package:yanyou/routes/Routes.dart';
 
 class AdvisoryItem extends StatelessWidget {
-  AdvisoryItem({Key key}) : super(key: key);
+  final AdvisoryModel advisory;
+  AdvisoryItem({Key key, this.advisory}) : super(key: key);
   Function jumpAdvisoryDetails(BuildContext context) {
     return () {
       print('进入热点详情页');
       Application.router.navigateTo(
         context,
-        Routes.advisoryDetailsPage,
+        '${Routes.advisoryDetailsPage}?advisoryId=${advisory.advisoryId}',
         transition: TransitionType.native,
       );
     };
@@ -44,6 +47,7 @@ class AdvisoryItem extends StatelessWidget {
 
   // 咨询标题
   Widget advisoryTitle() {
+    String tag = advisory.advisoryTag.substring(0, 1);
     return Row(
       children: <Widget>[
         Container(
@@ -56,7 +60,7 @@ class AdvisoryItem extends StatelessWidget {
           ),
           child: Center(
             child: Text(
-              '报',
+              tag,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 14,
@@ -64,7 +68,7 @@ class AdvisoryItem extends StatelessWidget {
             ),
           ),
         ),
-        Text('报考指南'),
+        Text(advisory.advisoryTag),
       ],
     );
   }
@@ -81,10 +85,12 @@ class AdvisoryItem extends StatelessWidget {
             margin: EdgeInsets.only(right: 8),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-                'assets/images/banner.jpg',
+              child: CachedNetworkImage(
                 width: 70,
                 height: 70,
+                imageUrl: advisory.advisoryBanner,
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
                 fit: BoxFit.cover,
               ),
             ),
@@ -96,7 +102,7 @@ class AdvisoryItem extends StatelessWidget {
               Container(
                 width: screenWidth - 110,
                 child: Text(
-                  '教育部：2020年自划线研究生复试录取工作延期。',
+                  advisory.advisoryTitle,
                   maxLines: 3,
                   style: TextStyle(
                     fontSize: 16,
@@ -126,13 +132,13 @@ class AdvisoryItem extends StatelessWidget {
           color: Colors.grey,
         ),
         Text(
-          '3分钟前',
+          advisory.createTime,
           style: textStyle,
         ),
         Container(
           margin: EdgeInsets.only(left: 12),
           child: Text(
-            '2000人访问',
+            '${advisory.advisoryAccess}人访问',
             style: textStyle,
           ),
         ),

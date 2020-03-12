@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:flutter_easyrefresh/material_header.dart';
+import 'package:yanyou/api/Advisory.dart';
 import 'package:yanyou/api/Banner.dart';
 import 'package:yanyou/components/Home/AdvisoryItem.dart';
 import 'package:yanyou/components/Home/BannerSwiper.dart';
 import 'package:yanyou/components/Home/CheckIn.dart';
 import 'package:yanyou/components/Home/MicroPage.dart';
+import 'package:yanyou/models/AdvisoryModel.dart';
 
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
@@ -14,11 +16,15 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<String> bannersUrl = [];
+  List<AdvisoryModel> advisoryList = [];
   bool loading = true;
+  int page = 1;
+  int count = 3;
   @override
   void initState() {
     super.initState();
     requestBanner();
+    requestAdvisoryList('refresh', page++, count);
   }
 
   Future<void> requestBanner() async {
@@ -41,12 +47,46 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Future<void> onLoadHandler() async {}
-  Future<void> onRefreshHandler() async {}
+  Future<void> requestAdvisoryList(String type, int page, int count) async {
+    try {
+      var result = await getAdvisoryList(page: page, count: count);
+      if (result['noerr'] == 0) {
+        List<AdvisoryModel> tempAdvisoryList = result['data']
+            .map((item) {
+              return AdvisoryModel.fromJson(item);
+            })
+            .cast<AdvisoryModel>()
+            .toList();
+        setState(() {
+          if (type == 'refresh') {
+            advisoryList = tempAdvisoryList;
+          } else {
+            advisoryList.addAll(tempAdvisoryList);
+          }
+        });
+      }
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  Future<void> onLoadHandler() async {
+    await requestAdvisoryList('load', page++, count);
+  }
+
+  Future<void> onRefreshHandler() async {
+    page = 1;
+    await requestAdvisoryList('refresh', page++, count);
+  }
+
   @override
   Widget build(BuildContext context) {
     num screenWidth = MediaQuery.of(context).size.width;
     List<Widget> widgetsList = initialHeaderWidgets(screenWidth);
+    List<Widget> advisoryWidget = advisoryList.map((item) {
+      return AdvisoryItem(advisory: item);
+    }).toList();
+    widgetsList.addAll(advisoryWidget);
     return Scaffold(
       appBar: AppBar(
         title: Text('研优'),
@@ -82,11 +122,6 @@ class _HomeState extends State<Home> {
         color: Colors.grey[200],
       ),
       hotTitle(),
-      AdvisoryItem(),
-      AdvisoryItem(),
-      AdvisoryItem(),
-      AdvisoryItem(),
-      AdvisoryItem(),
     ];
   }
 
