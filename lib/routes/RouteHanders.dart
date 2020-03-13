@@ -15,7 +15,7 @@ import 'package:yanyou/pages/Home/AdvisoryDetails.dart';
 import 'package:yanyou/pages/Home/CheckPage.dart';
 import 'package:yanyou/pages/Home/Micro/FindSenior.dart';
 import 'package:yanyou/pages/Home/Micro/MonthPlan.dart';
-import 'package:yanyou/pages/Home/Micro/Resource.dart';
+import 'package:yanyou/pages/Home/Micro/FindResource.dart';
 import 'package:yanyou/pages/Home/Micro/SchoolMeet/MeetDetails.dart';
 import 'package:yanyou/pages/Home/Micro/SchoolMeet/SchoolMeet.dart';
 import 'package:yanyou/pages/Home/RewardPage.dart';

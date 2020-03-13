@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:yanyou/api/Advisory.dart';
 import 'package:yanyou/components/Home/Reward.dart';
-import 'package:yanyou/models/AdvisoryMOdel.dart';
+import 'package:yanyou/models/AdvisoryModel.dart';
 
 class AdvisoryDetails extends StatefulWidget {
   final int advisoryId;
