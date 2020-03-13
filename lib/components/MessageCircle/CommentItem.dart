@@ -1,10 +1,28 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
+import 'package:yanyou/api/Talk.dart';
+import 'package:yanyou/models/CommentModel.dart';
 
 class CommentItem extends StatelessWidget {
-  CommentItem({Key key}) : super();
-  Future<void> commentLikeAction() async {
-    print('评论喜欢');
+  final CommentModel commentModel;
+  final Function likeCallback;
+  CommentItem({Key key, this.commentModel, this.likeCallback}) : super();
+  Function commentLikeAction(BuildContext context) {
+    return () async {
+      try {
+        var result = await talkLike(
+          userId: 2,
+          targetId: commentModel.commentId,
+          type: 1,
+        );
+        if (result['noerr'] == 0) {
+          likeCallback(commentModel.commentId, result['data']);
+        }
+      } catch (err) {
+        print(err);
+      }
+    };
   }
 
   @override
@@ -21,8 +39,7 @@ class CommentItem extends StatelessWidget {
                 child: CachedNetworkImage(
                   width: 35,
                   height: 35,
-                  imageUrl:
-                      'http://kimvoice.oss-cn-beijing.aliyuncs.com/voice/1.png',
+                  imageUrl: commentModel.userImage,
                   placeholder: (context, url) => CircularProgressIndicator(),
                   errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
@@ -34,14 +51,14 @@ class CommentItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      '周慧敏',
+                      commentModel.userName,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                     Text(
-                      '3分钟前',
+                      commentModel.createTime,
                       style: TextStyle(
                         fontSize: 11,
                         color: Colors.grey[400],
@@ -61,21 +78,21 @@ class CommentItem extends StatelessWidget {
                 Container(
                   width: screenWidth - 110,
                   child: Text(
-                    '这个东西好厉害。这个东西好厉害这个东西好厉害这个东西好厉害',
+                    commentModel.commentContent,
                     maxLines: 3,
                   ),
                 ),
                 Column(
                   children: <Widget>[
                     GestureDetector(
-                      onTap: commentLikeAction,
-                      child: Icon(
-                        Icons.favorite,
-                        color: Colors.red,
-                      ),
+                      onTap: commentLikeAction(context),
+                      child: Icon(Icons.favorite,
+                          color: commentModel.commentLike.action
+                              ? Colors.red
+                              : Colors.grey[400]),
                     ),
                     Text(
-                      '123',
+                      commentModel.commentLike.count.toString(),
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey,

@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
   List<AdvisoryModel> advisoryList = [];
   bool loading = true;
   int page = 1;
-  int count = 3;
+  int count = 10;
   bool checked = false;
   @override
   void initState() {

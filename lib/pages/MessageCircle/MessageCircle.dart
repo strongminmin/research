@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:flutter_easyrefresh/material_header.dart';
+import 'package:provider/provider.dart';
+import 'package:yanyou/api/Talk.dart';
 import 'package:yanyou/components/MessageCircle/MessageItem.dart';
+import 'package:yanyou/models/Talk.dart';
+import 'package:yanyou/provider/TalkProvider.dart';
 import 'package:yanyou/routes/Application.dart';
 import 'package:yanyou/routes/Routes.dart';
 
@@ -12,6 +16,8 @@ class MessageCircle extends StatefulWidget {
 }
 
 class _MessageCircleState extends State<MessageCircle> {
+  int page = 1;
+  int count = 10;
   void jumpReleaseMessagePage() {
     Application.router.navigateTo(
       context,
@@ -20,8 +26,43 @@ class _MessageCircleState extends State<MessageCircle> {
     );
   }
 
-  Future<void> onLoadHandler() async {}
-  Future<void> onRefreshHanlder() async {}
+  @override
+  void initState() {
+    super.initState();
+    fetchRequest('refresh', page++, count);
+  }
+
+  Future<void> fetchRequest(String type, int page, int count) async {
+    try {
+      TalkProvider talkProvider = Provider.of<TalkProvider>(
+        context,
+        listen: false,
+      );
+      var result = await getTalkList(
+        userId: 2,
+        page: page,
+        count: count,
+      );
+      if (result['noerr'] == 0) {
+        if (type == 'refresh') {
+          talkProvider.initTalkModel(result['data']);
+        } else {
+          talkProvider.addTalkModel(result['data']);
+        }
+      }
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  Future<void> onLoadHandler() async {
+    await fetchRequest('load', page++, count);
+  }
+
+  Future<void> onRefreshHanlder() async {
+    page = 1;
+    await fetchRequest('refresh', page++, count);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,22 +82,29 @@ class _MessageCircleState extends State<MessageCircle> {
           )
         ],
       ),
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        color: Colors.white,
-        child: EasyRefresh(
-          onLoad: onLoadHandler,
-          onRefresh: onRefreshHanlder,
-          footer: MaterialFooter(),
-          header: MaterialHeader(),
-          child: ListView.builder(
-            itemCount: 10,
-            itemBuilder: (context, index) {
-              return MessageItem();
-            },
-          ),
-        ),
+      body: Consumer<TalkProvider>(
+        builder: (context, talkProvider, child) {
+          List<TalkModel> talksModel = talkProvider.talksModel;
+          return talksModel == null
+              ? Center(child: CircularProgressIndicator())
+              : Container(
+                  width: screenWidth,
+                  height: screenHeight,
+                  color: Colors.white,
+                  child: EasyRefresh(
+                    onLoad: onLoadHandler,
+                    onRefresh: onRefreshHanlder,
+                    footer: MaterialFooter(),
+                    header: MaterialHeader(),
+                    child: ListView.builder(
+                      itemCount: talksModel.length,
+                      itemBuilder: (context, index) {
+                        return MessageItem(talkModel: talksModel[index]);
+                      },
+                    ),
+                  ),
+                );
+        },
       ),
     );
   }

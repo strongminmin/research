@@ -246,12 +246,8 @@ class _ReleaseMessageState extends State<ReleaseMessage> {
         files: images,
       );
       loading?.hide();
-      print(result);
       if (result['noerr'] == 0) {
-        Future.delayed(Duration(seconds: 1)).then((value) {
-          Navigator.of(context).pop();
-          Navigator.of(context).pop();
-        });
+        Navigator.of(context).pop();
       }
       Toast.show(
         result['message'],
@@ -292,29 +288,31 @@ class _ReleaseMessageState extends State<ReleaseMessage> {
       ),
       body: Container(
         width: screenWidth,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: TextField(
-                controller: _messageController,
-                maxLines: 6,
-                maxLength: 100,
-                decoration: InputDecoration(
-                  hintText: '发布你的想法...',
-                  hintStyle: TextStyle(fontSize: 14),
-                  border: InputBorder.none,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: TextField(
+                  controller: _messageController,
+                  maxLines: 6,
+                  maxLength: 100,
+                  decoration: InputDecoration(
+                    hintText: '发布你的想法...',
+                    hintStyle: TextStyle(fontSize: 14),
+                    border: InputBorder.none,
+                  ),
                 ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.all(16),
-              child: Wrap(
-                children: imageList,
-              ),
-            )
-          ],
+              Container(
+                padding: EdgeInsets.all(16),
+                child: Wrap(
+                  children: imageList,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

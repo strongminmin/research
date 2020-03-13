@@ -1,26 +1,35 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
+import 'package:yanyou/api/Talk.dart';
 import 'package:yanyou/components/MessageCircle/CommentList.dart';
+import 'package:yanyou/models/Talk.dart';
+import 'package:yanyou/provider/TalkProvider.dart';
 
 class MessageItem extends StatelessWidget {
-  MessageItem({Key key}) : super(key: key);
-  final List<String> images = [
-    'http://kimvoice.oss-cn-beijing.aliyuncs.com/voice/1.png',
-    'http://kimvoice.oss-cn-beijing.aliyuncs.com/voice/1.png',
-    'http://kimvoice.oss-cn-beijing.aliyuncs.com/voice/1.png',
-    'http://kimvoice.oss-cn-beijing.aliyuncs.com/voice/1.png',
-    'http://kimvoice.oss-cn-beijing.aliyuncs.com/voice/1.png',
-    'http://kimvoice.oss-cn-beijing.aliyuncs.com/voice/topic/2020-02-27%2023%3A33%3A42.772603.jpg',
-    'http://kimvoice.oss-cn-beijing.aliyuncs.com/voice/topic/2020-02-27%2023%3A33%3A42.772603.jpg',
-    'http://kimvoice.oss-cn-beijing.aliyuncs.com/voice/topic/2020-02-27%2023%3A33%3A42.772603.jpg',
-    'http://kimvoice.oss-cn-beijing.aliyuncs.com/voice/topic/2020-02-27%2023%3A33%3A42.772603.jpg',
-  ];
-  void jumpDetailsPage() {
-    print('跳转到详情页');
-  }
+  final TalkModel talkModel;
+  MessageItem({Key key, this.talkModel}) : super(key: key);
 
-  void supportHander() {
-    print('点赞');
+  Function supportHander(BuildContext context) {
+    return () async {
+      try {
+        TalkProvider talkProvider = Provider.of<TalkProvider>(
+          context,
+          listen: false,
+        );
+        var result = await talkLike(
+          userId: 2,
+          targetId: talkModel.talkId,
+          type: 0,
+        );
+        if (result['noerr'] == 0) {
+          talkProvider.updateLike(talkModel.talkId, result['data']);
+        }
+      } catch (err) {
+        print(err);
+      }
+    };
   }
 
   Function openCommentSheet(BuildContext context) {
@@ -28,7 +37,7 @@ class MessageItem extends StatelessWidget {
       showModalBottomSheet(
         context: context,
         builder: (context) {
-          return CommentList();
+          return CommentList(talkId: talkModel.talkId);
         },
       );
     };
@@ -37,25 +46,22 @@ class MessageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     num screenWidth = MediaQuery.of(context).size.width;
-    return GestureDetector(
-      onTap: jumpDetailsPage,
-      child: Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          border: Border(
-              bottom: BorderSide(
-            width: 0.5,
-            color: Colors.grey[200],
-          )),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            messageHeader(),
-            messageContent(screenWidth),
-            messageFooter(),
-          ],
-        ),
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border(
+            bottom: BorderSide(
+          width: 0.5,
+          color: Colors.grey[200],
+        )),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          messageHeader(),
+          messageContent(screenWidth),
+          messageFooter(),
+        ],
       ),
     );
   }
@@ -68,7 +74,7 @@ class MessageItem extends StatelessWidget {
           child: CachedNetworkImage(
             width: 40,
             height: 40,
-            imageUrl: 'http://kimvoice.oss-cn-beijing.aliyuncs.com/voice/1.png',
+            imageUrl: talkModel.userImage,
             placeholder: (context, url) => CircularProgressIndicator(),
             errorWidget: (context, url, error) => Icon(Icons.error),
           ),
@@ -80,14 +86,14 @@ class MessageItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Text(
-                '周慧敏',
+                talkModel.userName,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                 ),
               ),
               Text(
-                '56分钟前',
+                talkModel.createTime,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey,
@@ -103,7 +109,7 @@ class MessageItem extends StatelessWidget {
   // 消息的内容区域-文字和图片
   Widget messageContent(num screenWidth) {
     num imageW = computeImageSize(screenWidth);
-    List<Widget> imageWidgets = images.map((url) {
+    List<Widget> imageWidgets = talkModel.talkImages.map((url) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: CachedNetworkImage(
@@ -122,7 +128,7 @@ class MessageItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            '今天天气不错',
+            talkModel.talkContent,
             style: TextStyle(
               fontSize: 16,
             ),
@@ -165,7 +171,7 @@ class MessageItem extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(left: 2),
                     child: Text(
-                      '123',
+                      talkModel.comment.toString(),
                       style: TextStyle(fontSize: 12, color: Colors.grey[400]),
                     ),
                   )
@@ -176,17 +182,19 @@ class MessageItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   GestureDetector(
-                    onTap: supportHander,
+                    onTap: supportHander(context),
                     child: Icon(
                       Icons.thumb_up,
                       size: 20,
-                      color: true ? Colors.blue[400] : Colors.grey[400],
+                      color: talkModel.talkLike.action
+                          ? Colors.blue[400]
+                          : Colors.grey[400],
                     ),
                   ),
                   Container(
                     margin: EdgeInsets.only(left: 2),
                     child: Text(
-                      '123',
+                      talkModel.talkLike.count.toString(),
                       style: TextStyle(fontSize: 12, color: Colors.grey[400]),
                     ),
                   )
@@ -202,9 +210,9 @@ class MessageItem extends StatelessWidget {
   //响应式计算图片的大小
   num computeImageSize(num screenWidth) {
     num width;
-    if (images.length == 1) {
+    if (talkModel.talkImages.length == 1) {
       width = (screenWidth / 2).floorToDouble() - 50;
-    } else if (images.length <= 4) {
+    } else if (talkModel.talkImages.length <= 4) {
       width = (screenWidth / 2).floorToDouble() - 50;
     } else {
       width = (screenWidth / 3).floorToDouble() - 50;

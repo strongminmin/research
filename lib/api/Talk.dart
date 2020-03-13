@@ -11,7 +11,7 @@ Future<dynamic> getTalkList({
   int count,
 }) async {
   Response response = await _dio.get(
-    '$BASE_URL/talk/talk',
+    '$BASE_URL/talk/talk-list',
     queryParameters: {
       'user_id': userId,
       'page': page,
@@ -55,12 +55,12 @@ Future<dynamic> talkLike({int userId, int targetId, int type}) async {
   return response.data;
 }
 
-Future<dynamic> getCommentList(
+Future<dynamic> getCommentList({
   int userId,
   int targetId,
   int page,
   int count,
-) async {
+}) async {
   Response response = await _dio.get(
     '$BASE_URL/talk/talk-comment-list',
     queryParameters: {
