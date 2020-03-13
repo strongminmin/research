@@ -16,7 +16,8 @@ import 'package:yanyou/pages/Home/CheckPage.dart';
 import 'package:yanyou/pages/Home/Micro/FindSenior.dart';
 import 'package:yanyou/pages/Home/Micro/MonthPlan.dart';
 import 'package:yanyou/pages/Home/Micro/Resource.dart';
-import 'package:yanyou/pages/Home/Micro/SchoolMeet.dart';
+import 'package:yanyou/pages/Home/Micro/SchoolMeet/MeetDetails.dart';
+import 'package:yanyou/pages/Home/Micro/SchoolMeet/SchoolMeet.dart';
 import 'package:yanyou/pages/Home/RewardPage.dart';
 import 'package:yanyou/pages/MessageCircle/ReleaseMessage.dart';
 import 'package:yanyou/pages/PersonalCenter/PersonalItem/Feedback.dart';
@@ -54,6 +55,13 @@ Handler findResourceHandler = Handler(
 Handler schoolMeetHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List> params) {
     return SchoolMeet();
+  },
+);
+// 校研会会议详情
+Handler meetDetailsHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    int id = int.parse(params['meetId'][0]);
+    return MeetDetails(meetId: id);
   },
 );
 // 找学长

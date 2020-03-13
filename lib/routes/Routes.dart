@@ -11,6 +11,8 @@ class Routes {
   static String monthPlanPage = '/monthPlan';
   static String findResourcePage = '/findResource';
   static String schoolMeetPage = '/schoolMeet';
+  // 会议详情
+  static String meetDetailsPage = 'meetDetails';
   static String findSeniorPage = '/findSenior';
   // 发布说说
   static String releaseMessagePage = '/releaseMessage';
@@ -54,6 +56,8 @@ class Routes {
     router.define(monthPlanPage, handler: monthPlanHandler);
     router.define(findResourcePage, handler: findResourceHandler);
     router.define(schoolMeetPage, handler: schoolMeetHandler);
+    // 会议详情
+    router.define(meetDetailsPage, handler: meetDetailsHandler);
     router.define(findSeniorPage, handler: findSeniorHandler);
     // 发布消息
     router.define(releaseMessagePage, handler: releaseMessageHander);
