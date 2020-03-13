@@ -20,7 +20,6 @@ import 'package:yanyou/pages/Home/Micro/SchoolMeet/MeetDetails.dart';
 import 'package:yanyou/pages/Home/Micro/SchoolMeet/SchoolMeet.dart';
 import 'package:yanyou/pages/Home/RewardPage.dart';
 import 'package:yanyou/pages/MessageCircle/ReleaseMessage.dart';
-import 'package:yanyou/pages/PersonalCenter/PersonalItem/Feedback.dart';
 import 'package:yanyou/pages/PersonalCenter/PersonalItem/History.dart';
 import 'package:yanyou/pages/PersonalCenter/PersonalItem/Message.dart';
 import 'package:yanyou/pages/PersonalCenter/PersonalItem/ReleaseList.dart';
@@ -218,12 +217,6 @@ Handler personalReleaseListHandler = Handler(
 Handler personalHistoryHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List> params) {
     return History();
-  },
-);
-// 系统反馈
-Handler personalFeedbackHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List> params) {
-    return SystemFeedback();
   },
 );
 // 设置

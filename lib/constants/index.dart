@@ -88,11 +88,6 @@ List<Map> personalCenterItems = [
     'page': Routes.historyPage,
   },
   {
-    'text': '系统反馈',
-    'image': 'assets/images/fankui.png',
-    'page': Routes.feedbackPage,
-  },
-  {
     'text': '设置',
     'image': 'assets/images/setting.png',
     'page': Routes.setupPage,

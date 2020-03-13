@@ -33,7 +33,6 @@ class Routes {
   // 个人中心相关
   static String messagePage = 'personal/message';
   static String historyPage = 'personal/history';
-  static String feedbackPage = 'personal/feedback';
   static String setupPage = 'personal/setup';
   static String releaseListPage = 'personal/release';
 
@@ -118,8 +117,6 @@ class Routes {
     router.define(releaseListPage, handler: personalReleaseListHandler);
     // 个人中心-浏览记录
     router.define(historyPage, handler: personalHistoryHandler);
-    // 个人中心-系统反馈
-    router.define(feedbackPage, handler: personalFeedbackHandler);
     // 个人中心-设置
     router.define(setupPage, handler: personalSetupHandler);
   }
