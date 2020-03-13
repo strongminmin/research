@@ -13,6 +13,10 @@ import 'package:yanyou/pages/College/CollegeDetails/Totor.dart';
 import 'package:yanyou/pages/College/CollegeDetails/Transfer.dart';
 import 'package:yanyou/pages/Home/AdvisoryDetails.dart';
 import 'package:yanyou/pages/Home/CheckPage.dart';
+import 'package:yanyou/pages/Home/Micro/FindSenior.dart';
+import 'package:yanyou/pages/Home/Micro/MonthPlan.dart';
+import 'package:yanyou/pages/Home/Micro/Resource.dart';
+import 'package:yanyou/pages/Home/Micro/SchoolMeet.dart';
 import 'package:yanyou/pages/Home/RewardPage.dart';
 import 'package:yanyou/pages/MessageCircle/ReleaseMessage.dart';
 import 'package:yanyou/pages/PersonalCenter/PersonalItem/Feedback.dart';
@@ -32,6 +36,30 @@ Handler rootHandler = Handler(
 Handler checkHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List> params) {
     return CheckPage();
+  },
+);
+// 月计划
+Handler monthPlanHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    return MonthPlan();
+  },
+);
+// 找资料
+Handler findResourceHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    return FindResource();
+  },
+);
+// 校研会
+Handler schoolMeetHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    return SchoolMeet();
+  },
+);
+// 找学长
+Handler findSeniorHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    return FindSenior();
   },
 );
 

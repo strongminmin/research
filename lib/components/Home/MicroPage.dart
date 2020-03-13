@@ -1,3 +1,4 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:yanyou/constants/index.dart';
 import 'package:yanyou/routes/Application.dart';
@@ -14,7 +15,11 @@ class MicroPage extends StatelessWidget {
         children: microPage.map((micro) {
           return GestureDetector(
             onTap: () {
-              Application.router.navigateTo(context, micro['path']);
+              Application.router.navigateTo(
+                context,
+                micro['page'],
+                transition: TransitionType.native,
+              );
             },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -7,6 +7,11 @@ class Routes {
   static String root = '/';
   // 打卡
   static String checkPage = '/check';
+  // 微应用
+  static String monthPlanPage = '/monthPlan';
+  static String findResourcePage = '/findResource';
+  static String schoolMeetPage = '/schoolMeet';
+  static String findSeniorPage = '/findSenior';
   // 发布说说
   static String releaseMessagePage = '/releaseMessage';
   // 热点相关
@@ -45,6 +50,11 @@ class Routes {
     router.define(root, handler: rootHandler);
     // 打卡
     router.define(checkPage, handler: checkHandler);
+    // 微应用相关
+    router.define(monthPlanPage, handler: monthPlanHandler);
+    router.define(findResourcePage, handler: findResourceHandler);
+    router.define(schoolMeetPage, handler: schoolMeetHandler);
+    router.define(findSeniorPage, handler: findSeniorHandler);
     // 发布消息
     router.define(releaseMessagePage, handler: releaseMessageHander);
     // 热点详情

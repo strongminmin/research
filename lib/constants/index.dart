@@ -4,22 +4,22 @@ List<Map> microPage = [
   {
     'text': '月计划',
     'url': 'assets/images/jh.png',
-    'page': 'xxx',
+    'page': Routes.monthPlanPage,
   },
   {
     'text': '找资料',
     'url': 'assets/images/ziyuan.png',
-    'page': 'xxx',
+    'page': Routes.findResourcePage,
   },
   {
     'text': '校研会',
     'url': 'assets/images/huiyi.png',
-    'page': 'xxx',
+    'page': Routes.schoolMeetPage,
   },
   {
     'text': '找学长',
     'url': 'assets/images/xuesheng.png',
-    'page': 'xxx',
+    'page': Routes.findSeniorPage,
   }
 ];
 
