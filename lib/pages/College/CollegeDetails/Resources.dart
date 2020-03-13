@@ -81,6 +81,7 @@ class _ResourcesState extends State<Resources> {
 
   // 通过学校名称去拿资料
   Future<void> fetchRequest() async {}
+
   Function callCoundDisk(String url) {
     return () async {
       try {

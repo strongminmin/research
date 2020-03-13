@@ -7,6 +7,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart'; //图片压
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 import 'package:loading_dialog/loading_dialog.dart';
+import 'package:yanyou/api/Talk.dart';
 
 class ReleaseMessage extends StatefulWidget {
   _ReleaseMessageState createState() => _ReleaseMessageState();
@@ -232,15 +233,32 @@ class _ReleaseMessageState extends State<ReleaseMessage> {
   void releaseHandler() async {
     // 发布
     try {
-      loading?.show();
       String content = _messageController.text;
       if (content == '') {
         Toast.show('内容不能为空', context,
             duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
         return;
       }
-
+      loading?.show();
+      var result = await releaseTalk(
+        userId: 2,
+        content: content,
+        files: images,
+      );
       loading?.hide();
+      print(result);
+      if (result['noerr'] == 0) {
+        Future.delayed(Duration(seconds: 1)).then((value) {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        });
+      }
+      Toast.show(
+        result['message'],
+        context,
+        duration: Toast.LENGTH_SHORT,
+        gravity: Toast.CENTER,
+      );
     } catch (err) {
       Toast.show('发布失败', context,
           duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);

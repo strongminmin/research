@@ -13,7 +13,11 @@ class _FindSeniorState extends State<FindSenior> {
         title: Text('找学长'),
         centerTitle: true,
       ),
-      body: Container(),
+      body: Container(
+        child: Center(
+          child: Text('该功能暂未开通'),
+        ),
+      ),
     );
   }
 }
