@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:yanyou/api/Resource.dart';
 import 'package:yanyou/components/Micro/FindResource/ResourceItem.dart';
 import 'package:yanyou/models/ResourceModel.dart';
+import 'package:yanyou/models/UserModel.dart';
+import 'package:yanyou/provider/UserProvider.dart';
 
 class FindResource extends StatefulWidget {
   _FindResourceState createState() => _FindResourceState();
@@ -26,7 +29,11 @@ class _FindResourceState extends State<FindResource>
 
   Future<void> fetchRequest() async {
     try {
-      var result = await getResourceList(userId: 1);
+      UserModel userModel = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      ).userInfo;
+      var result = await getResourceList(userId: userModel.userId);
       if (result['noerr'] == 0) {
         setState(() {
           resourceModel = ResourceModel.fromJson(result['data']).resourceModel;

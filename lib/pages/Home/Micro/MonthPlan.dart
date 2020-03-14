@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 import 'package:yanyou/api/Plan.dart';
 import 'package:yanyou/components/Micro/MonthPlan/PlanItem.dart';
 import 'package:yanyou/models/PlanModel.dart';
+import 'package:yanyou/models/UserModel.dart';
+import 'package:yanyou/provider/UserProvider.dart';
 
 class MonthPlan extends StatefulWidget {
   MonthPlan({Key key}) : super(key: key);
@@ -38,7 +41,11 @@ class _MonthPlanState extends State<MonthPlan>
 
   Future<void> fetchRequest() async {
     try {
-      var result = await getMonthPlan(userId: 3);
+      UserModel userModel = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      ).userInfo;
+      var result = await getMonthPlan(userId: userModel.userId);
       if (result['noerr'] == 0) {
         setState(() {
           planData = PlanModel.fromJson(result['data']);
@@ -61,8 +68,12 @@ class _MonthPlanState extends State<MonthPlan>
           gravity: Toast.CENTER,
         );
       }
+      UserModel userModel = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      ).userInfo;
       var result = await releasePlan(
-        userId: 3,
+        userId: userModel.userId,
         month: month,
         content: content,
       );

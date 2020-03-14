@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 import 'package:loading_dialog/loading_dialog.dart';
 import 'package:yanyou/api/Talk.dart';
+import 'package:yanyou/models/UserModel.dart';
+import 'package:yanyou/provider/UserProvider.dart';
 
 class ReleaseMessage extends StatefulWidget {
   _ReleaseMessageState createState() => _ReleaseMessageState();
@@ -233,6 +235,10 @@ class _ReleaseMessageState extends State<ReleaseMessage> {
   void releaseHandler() async {
     // 发布
     try {
+      UserModel userModel = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      ).userInfo;
       String content = _messageController.text;
       if (content == '') {
         Toast.show('内容不能为空', context,
@@ -241,7 +247,7 @@ class _ReleaseMessageState extends State<ReleaseMessage> {
       }
       loading?.show();
       var result = await releaseTalk(
-        userId: 2,
+        userId: userModel.userId,
         content: content,
         files: images,
       );

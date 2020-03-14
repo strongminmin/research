@@ -1,7 +1,11 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:yanyou/constants/index.dart';
+import 'package:yanyou/models/UserModel.dart';
+import 'package:yanyou/provider/UserProvider.dart';
 import 'package:yanyou/routes/Application.dart';
+import 'package:yanyou/routes/Routes.dart';
 
 class MicroPage extends StatelessWidget {
   @override
@@ -15,11 +19,23 @@ class MicroPage extends StatelessWidget {
         children: microPage.map((micro) {
           return GestureDetector(
             onTap: () {
-              Application.router.navigateTo(
+              UserModel userModel = Provider.of<UserProvider>(
                 context,
-                micro['page'],
-                transition: TransitionType.native,
-              );
+                listen: false,
+              ).userInfo;
+              if (userModel.userId == 0) {
+                Application.router.navigateTo(
+                  context,
+                  Routes.loginPage,
+                  transition: TransitionType.native,
+                );
+              } else {
+                Application.router.navigateTo(
+                  context,
+                  micro['page'],
+                  transition: TransitionType.native,
+                );
+              }
             },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

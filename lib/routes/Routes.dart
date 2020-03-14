@@ -35,11 +35,15 @@ class Routes {
   static String historyPage = 'personal/history';
   static String setupPage = 'personal/setup';
   static String releaseListPage = 'personal/release';
+  // 用户认证相关
+  static String loginPage = 'login';
+  static String emailCheckPage = 'emailCheck';
+  static String registerUserPage = 'registerUser';
+  static String resetPasswordPage = 'resetPassword';
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(
       handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-        print("ROUTE WAS NOT FOUND !!!");
         return Container(
           child: Center(
             child: Text('ROUTE WAS NOT FOUND !!!'),
@@ -119,5 +123,10 @@ class Routes {
     router.define(historyPage, handler: personalHistoryHandler);
     // 个人中心-设置
     router.define(setupPage, handler: personalSetupHandler);
+    // 用户认证相关
+    router.define(loginPage, handler: loginHandler);
+    router.define(emailCheckPage, handler: emailCheckHandler);
+    router.define(registerUserPage, handler: registerUserHandler);
+    router.define(resetPasswordPage, handler: resetPasswordHandler);
   }
 }

@@ -7,7 +7,9 @@ import 'package:provider/provider.dart';
 import 'package:yanyou/api/Talk.dart';
 import 'package:yanyou/components/MessageCircle/MessageItem.dart';
 import 'package:yanyou/models/Talk.dart';
+import 'package:yanyou/models/UserModel.dart';
 import 'package:yanyou/provider/TalkProvider.dart';
+import 'package:yanyou/provider/UserProvider.dart';
 import 'package:yanyou/routes/Application.dart';
 import 'package:yanyou/routes/Routes.dart';
 
@@ -34,12 +36,16 @@ class _MessageCircleState extends State<MessageCircle> {
 
   Future<void> fetchRequest(String type, int page, int count) async {
     try {
+      UserModel userModel = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      ).userInfo;
       TalkProvider talkProvider = Provider.of<TalkProvider>(
         context,
         listen: false,
       );
       var result = await getTalkList(
-        userId: 2,
+        userId: userModel.userId,
         page: page,
         count: count,
       );

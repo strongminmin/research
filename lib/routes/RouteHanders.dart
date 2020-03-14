@@ -20,6 +20,10 @@ import 'package:yanyou/pages/Home/Micro/SchoolMeet/MeetDetails.dart';
 import 'package:yanyou/pages/Home/Micro/SchoolMeet/SchoolMeet.dart';
 import 'package:yanyou/pages/Home/RewardPage.dart';
 import 'package:yanyou/pages/MessageCircle/ReleaseMessage.dart';
+import 'package:yanyou/pages/PersonalCenter/Login/EmailCheck.dart';
+import 'package:yanyou/pages/PersonalCenter/Login/Login.dart';
+import 'package:yanyou/pages/PersonalCenter/Login/RegisterUser.dart';
+import 'package:yanyou/pages/PersonalCenter/Login/ResetPassword.dart';
 import 'package:yanyou/pages/PersonalCenter/PersonalItem/History.dart';
 import 'package:yanyou/pages/PersonalCenter/PersonalItem/Message.dart';
 import 'package:yanyou/pages/PersonalCenter/PersonalItem/ReleaseList.dart';
@@ -223,5 +227,34 @@ Handler personalHistoryHandler = Handler(
 Handler personalSetupHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List> params) {
     return Setup();
+  },
+);
+
+// 用户认证相关
+// 登录
+Handler loginHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    return Login();
+  },
+);
+// 邮箱验证
+Handler emailCheckHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    String type = params['type'][0];
+    return EmailCheck(type: type);
+  },
+);
+// 注册
+Handler registerUserHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    String userEmail = params['userEmail'][0];
+    return RegisterUser(userEmail: userEmail);
+  },
+);
+// 重置密码
+Handler resetPasswordHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, List> params) {
+    String userId = params['userId'][0];
+    return ResetPassword(userId: userId);
   },
 );

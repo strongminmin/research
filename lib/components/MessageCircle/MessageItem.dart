@@ -1,12 +1,17 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 import 'package:yanyou/api/Talk.dart';
 import 'package:yanyou/components/MessageCircle/CommentList.dart';
 import 'package:yanyou/models/Talk.dart';
+import 'package:yanyou/models/UserModel.dart';
 import 'package:yanyou/provider/TalkProvider.dart';
+import 'package:yanyou/provider/UserProvider.dart';
+import 'package:yanyou/routes/Application.dart';
+import 'package:yanyou/routes/Routes.dart';
 
 class MessageItem extends StatelessWidget {
   final TalkModel talkModel;
@@ -16,12 +21,23 @@ class MessageItem extends StatelessWidget {
   Function supportHander(BuildContext context) {
     return () async {
       try {
+        UserModel userModel = Provider.of<UserProvider>(
+          context,
+          listen: false,
+        ).userInfo;
+        if (userModel.userId == 0) {
+          Application.router.navigateTo(
+            context,
+            Routes.loginPage,
+            transition: TransitionType.native,
+          );
+        }
         TalkProvider talkProvider = Provider.of<TalkProvider>(
           context,
           listen: false,
         );
         var result = await talkLike(
-          userId: 2,
+          userId: userModel.userId,
           targetId: talkModel.talkId,
           type: 0,
         );

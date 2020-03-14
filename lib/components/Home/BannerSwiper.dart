@@ -31,6 +31,5 @@ class BannerSwiper extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

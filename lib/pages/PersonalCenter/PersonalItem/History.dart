@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:flutter_easyrefresh/material_header.dart';
+import 'package:provider/provider.dart';
 import 'package:yanyou/api/History.dart';
 import 'package:yanyou/components/PersonalCenter/History/HistoryItem.dart';
 import 'package:yanyou/models/History.dart';
+import 'package:yanyou/models/UserModel.dart';
+import 'package:yanyou/provider/UserProvider.dart';
 
 class History extends StatefulWidget {
   History({Key key}) : super(key: key);
@@ -24,8 +27,12 @@ class _HistoryState extends State<History> {
 
   Future<void> fetchRequest(String type, int page, int count) async {
     try {
+      UserModel userModel = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      ).userInfo;
       var result = await getHistoryList(
-        userId: 2,
+        userId: userModel.userId,
         page: page,
         count: count,
       );
@@ -73,9 +80,11 @@ class _HistoryState extends State<History> {
 
   Future<void> cleanHistoryCallback() async {
     try {
-      var result = await cleanHistory(
-        userId: 2,
-      );
+      UserModel userModel = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      ).userInfo;
+      var result = await cleanHistory(userId: userModel.userId);
       if (result['noerr'] == 0) {
         page = 1;
         await fetchRequest('refresh', page++, count);

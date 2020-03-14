@@ -1,7 +1,11 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:yanyou/constants/index.dart';
+import 'package:yanyou/models/UserModel.dart';
+import 'package:yanyou/provider/UserProvider.dart';
 import 'package:yanyou/routes/Application.dart';
+import 'package:yanyou/routes/Routes.dart';
 
 class Content extends StatelessWidget {
   Content({Key key}) : super(key: key);
@@ -21,11 +25,23 @@ class Content extends StatelessWidget {
       return Builder(builder: (BuildContext context) {
         return GestureDetector(
           onTap: () {
-            Application.router.navigateTo(
+            UserModel userModel = Provider.of<UserProvider>(
               context,
-              item['page'],
-              transition: TransitionType.native,
-            );
+              listen: false,
+            ).userInfo;
+            if (userModel.userId == 0) {
+              Application.router.navigateTo(
+                context,
+                Routes.loginPage,
+                transition: TransitionType.native,
+              );
+            } else {
+              Application.router.navigateTo(
+                context,
+                item['page'],
+                transition: TransitionType.native,
+              );
+            }
           },
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),

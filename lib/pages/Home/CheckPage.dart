@@ -1,7 +1,13 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:toast/toast.dart';
 import 'package:yanyou/api/Check.dart';
+import 'package:yanyou/models/UserModel.dart';
+import 'package:yanyou/provider/UserProvider.dart';
+import 'package:yanyou/routes/Application.dart';
+import 'package:yanyou/routes/Routes.dart';
 
 class CheckPage extends StatefulWidget {
   CheckPage({Key key}) : super(key: key);
@@ -34,8 +40,11 @@ class _CheckPageState extends State<CheckPage> {
 
   Future<void> fetchRequest() async {
     try {
-      // TODO:用户
-      var result = await getCheckList(userId: 1);
+      UserModel userModel = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      ).userInfo;
+      var result = await getCheckList(userId: userModel.userId);
       if (result['noerr'] == 0) {
         Map<DateTime, List> tempCheck = {};
         result['data'].forEach((item) {
@@ -58,7 +67,11 @@ class _CheckPageState extends State<CheckPage> {
 
   Future<void> checkAction() async {
     try {
-      var result = await checkIn(userId: 1);
+      UserModel userModel = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      ).userInfo;
+      var result = await checkIn(userId: userModel.userId);
       if (result['noerr'] == 0) {
         setState(() {
           checkedDay[DateTime.now()] = [];

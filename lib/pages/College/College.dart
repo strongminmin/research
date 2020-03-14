@@ -1,7 +1,10 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:yanyou/common/index.dart';
 import 'package:yanyou/components/College/CityDrawer.dart';
+import 'package:yanyou/models/UserModel.dart';
+import 'package:yanyou/provider/UserProvider.dart';
 import 'package:yanyou/routes/Application.dart';
 import 'package:yanyou/routes/Routes.dart';
 
@@ -25,15 +28,26 @@ class _CollegeState extends State<College> {
   ];
   Function jumpCollegeDetails(String collegeName) {
     return () {
-      print('跳转到学校详情');
       String collegeNameEncode = FluroConvertUtils.fluroCnParamsEncode(
         collegeName,
       );
-      Application.router.navigateTo(
+      UserModel userModel = Provider.of<UserProvider>(
         context,
-        '${Routes.collegeDetailsPage}?name=$collegeNameEncode',
-        transition: TransitionType.native,
-      );
+        listen: false,
+      ).userInfo;
+      if (userModel.userId == 0) {
+        Application.router.navigateTo(
+          context,
+          Routes.loginPage,
+          transition: TransitionType.native,
+        );
+      } else {
+        Application.router.navigateTo(
+          context,
+          '${Routes.collegeDetailsPage}?name=$collegeNameEncode',
+          transition: TransitionType.native,
+        );
+      }
     };
   }
 

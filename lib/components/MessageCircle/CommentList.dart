@@ -1,3 +1,4 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
@@ -8,7 +9,11 @@ import 'package:yanyou/api/Talk.dart';
 import 'package:yanyou/components/MessageCircle/CommentItem.dart';
 import 'package:yanyou/models/CommentModel.dart';
 import 'package:yanyou/models/Talk.dart';
+import 'package:yanyou/models/UserModel.dart';
 import 'package:yanyou/provider/TalkProvider.dart';
+import 'package:yanyou/provider/UserProvider.dart';
+import 'package:yanyou/routes/Application.dart';
+import 'package:yanyou/routes/Routes.dart';
 
 class CommentList extends StatefulWidget {
   final int talkId;
@@ -37,8 +42,12 @@ class _CommentListState extends State<CommentList> {
 
   Future<void> fetchRequet(String type, int page, int count) async {
     try {
+      UserModel userModel = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      ).userInfo;
       var result = await getCommentList(
-        userId: 2,
+        userId: userModel.userId,
         targetId: widget.talkId,
         page: page,
         count: count,
@@ -78,6 +87,18 @@ class _CommentListState extends State<CommentList> {
         context,
         listen: false,
       );
+      UserModel userModel = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      ).userInfo;
+      if (userModel.userId == 0) {
+        Application.router.navigateTo(
+          context,
+          Routes.loginPage,
+          transition: TransitionType.native,
+        );
+        return;
+      }
       String content = _textEditingController.text;
       if (content.isEmpty) {
         Toast.show(
@@ -89,7 +110,7 @@ class _CommentListState extends State<CommentList> {
         return;
       }
       var result = await releaseComment(
-        userId: 2,
+        userId: userModel.userId,
         targetId: widget.talkId,
         commentContent: content,
       );

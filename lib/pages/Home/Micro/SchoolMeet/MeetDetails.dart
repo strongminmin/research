@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:provider/provider.dart';
 import 'package:yanyou/api/Meet.dart';
 import 'package:yanyou/models/Meet.dart';
+import 'package:yanyou/models/UserModel.dart';
+import 'package:yanyou/provider/UserProvider.dart';
 
 class MeetDetails extends StatefulWidget {
   final int meetId;
@@ -19,8 +22,12 @@ class _MeetDetailsState extends State<MeetDetails> {
 
   Future<void> fetchRequest() async {
     try {
+      UserModel userModel = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      ).userInfo;
       var result = await getMeetDetails(
-        userId: 1,
+        userId: userModel.userId,
         meetId: widget.meetId,
       );
       if (result['noerr'] == 0) {

@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:provider/provider.dart';
 import 'package:yanyou/api/Advisory.dart';
 import 'package:yanyou/components/Home/Reward.dart';
 import 'package:yanyou/models/AdvisoryModel.dart';
+import 'package:yanyou/models/UserModel.dart';
+import 'package:yanyou/provider/UserProvider.dart';
 
 class AdvisoryDetails extends StatefulWidget {
   final int advisoryId;
@@ -21,8 +24,12 @@ class _AdvisoryDetailsState extends State<AdvisoryDetails> {
 
   Future<void> fetchRequest() async {
     try {
+      UserModel userModel = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      ).userInfo;
       var result = await getAdvisoryDetails(
-        userId: 1,
+        userId: userModel.userId,
         advisoryId: widget.advisoryId,
       );
       if (result['noerr'] == 0) {

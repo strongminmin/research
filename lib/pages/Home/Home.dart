@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:flutter_easyrefresh/material_header.dart';
+import 'package:provider/provider.dart';
 import 'package:yanyou/api/Advisory.dart';
 import 'package:yanyou/api/Banner.dart';
 import 'package:yanyou/api/Check.dart';
@@ -10,6 +11,8 @@ import 'package:yanyou/components/Home/BannerSwiper.dart';
 import 'package:yanyou/components/Home/CheckIn.dart';
 import 'package:yanyou/components/Home/MicroPage.dart';
 import 'package:yanyou/models/AdvisoryModel.dart';
+import 'package:yanyou/models/UserModel.dart';
+import 'package:yanyou/provider/UserProvider.dart';
 
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
@@ -33,7 +36,11 @@ class _HomeState extends State<Home> {
   // 用户是否打卡请求
   Future<void> requestCheck() async {
     try {
-      var result = await getUserChecked(userId: 1);
+      UserModel userModel = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      ).userInfo;
+      var result = await getUserChecked(userId: userModel.userId);
       if (result['noerr'] == 0) {
         setState(() {
           checked = result['data'];

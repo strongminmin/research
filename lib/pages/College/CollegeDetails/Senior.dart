@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:io';
 import 'package:toast/toast.dart';
 
 class Senior extends StatefulWidget {

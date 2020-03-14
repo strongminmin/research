@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:yanyou/models/AdvisoryModel.dart';
+import 'package:yanyou/models/UserModel.dart';
+import 'package:yanyou/provider/UserProvider.dart';
 import 'package:yanyou/routes/Application.dart';
 import 'package:yanyou/routes/Routes.dart';
 
@@ -10,12 +13,23 @@ class AdvisoryItem extends StatelessWidget {
   AdvisoryItem({Key key, this.advisory}) : super(key: key);
   Function jumpAdvisoryDetails(BuildContext context) {
     return () {
-      print('进入热点详情页');
-      Application.router.navigateTo(
+      UserModel userModel = Provider.of<UserProvider>(
         context,
-        '${Routes.advisoryDetailsPage}?advisoryId=${advisory.advisoryId}',
-        transition: TransitionType.native,
-      );
+        listen: false,
+      ).userInfo;
+      if (userModel.userId == 0) {
+        Application.router.navigateTo(
+          context,
+          Routes.loginPage,
+          transition: TransitionType.native,
+        );
+      } else {
+        Application.router.navigateTo(
+          context,
+          '${Routes.advisoryDetailsPage}?advisoryId=${advisory.advisoryId}',
+          transition: TransitionType.native,
+        );
+      }
     };
   }
 
