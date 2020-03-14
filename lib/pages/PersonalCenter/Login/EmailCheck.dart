@@ -21,7 +21,7 @@ class _EmailCheckState extends State<EmailCheck> {
       'nextPage': Routes.registerUserPage,
     },
     'resetPassword': {
-      'title': '找回密码',
+      'title': '重置密码',
       'subTitle': '请输入您的邮箱，用于找回您的密码',
       'nextPage': Routes.resetPasswordPage,
     },

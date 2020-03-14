@@ -195,7 +195,7 @@ class _LoginState extends State<Login> {
                     onTap: () {
                       Application.router.navigateTo(
                         context,
-                        '${Routes.resetPasswordPage}?type=resetPassword',
+                        '${Routes.emailCheckPage}?type=resetPassword',
                         transition: TransitionType.native,
                       );
                     },

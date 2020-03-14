@@ -13,7 +13,8 @@ class UserModel extends Object {
   UserModel({
     this.userId,
     this.userName,
-    this.userImage,
+    this.userImage =
+        'http://kimvoice.oss-cn-beijing.aliyuncs.com/voice/user/2020-03-08%2013%3A41%3A21.065889.jpg',
     this.password,
     this.userBirthday,
     this.userDescription,
