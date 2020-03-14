@@ -10,6 +10,7 @@ class TalkModel extends Object {
   String userImage;
   Like talkLike;
   int comment;
+  int talkStatus;
   TalkModel({
     this.talkId,
     this.userId,
@@ -20,6 +21,7 @@ class TalkModel extends Object {
     this.userName,
     this.talkLike,
     this.comment,
+    this.talkStatus,
   });
   factory TalkModel.fromJson(Map<String, dynamic> json) {
     Map encodeContent = jsonDecode(json['talk_content']);
@@ -33,6 +35,7 @@ class TalkModel extends Object {
       userName: json['user_name'] as String,
       talkLike: Like.fromJson(json['like']),
       comment: json['comment'] as int,
+      talkStatus: json['talk_status'] as int,
     );
   }
 }

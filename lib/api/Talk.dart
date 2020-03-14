@@ -16,6 +16,24 @@ Future<dynamic> getTalkList({
       'user_id': userId,
       'page': page,
       'count': count,
+      'type': 'all',
+    },
+  );
+  return response.data;
+}
+
+Future<dynamic> getSelfTalkList({
+  int userId,
+  int page,
+  int count,
+}) async {
+  Response response = await _dio.get(
+    '$BASE_URL/talk/talk-list',
+    queryParameters: {
+      'user_id': userId,
+      'page': page,
+      'count': count,
+      'type': 'self',
     },
   );
   return response.data;

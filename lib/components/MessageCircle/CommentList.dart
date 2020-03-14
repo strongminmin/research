@@ -12,7 +12,8 @@ import 'package:yanyou/provider/TalkProvider.dart';
 
 class CommentList extends StatefulWidget {
   final int talkId;
-  CommentList({Key key, this.talkId}) : super(key: key);
+  final String type;
+  CommentList({Key key, this.talkId, this.type}) : super(key: key);
   _CommentListState createState() => _CommentListState();
 }
 
@@ -95,7 +96,7 @@ class _CommentListState extends State<CommentList> {
       if (result['noerr'] == 0) {
         page = 1;
         await fetchRequet('refresh', page++, count);
-        talkProvider.updateComment(widget.talkId, result['data']);
+        talkProvider.updateComment(widget.type, widget.talkId, result['data']);
         _textEditingController.clear();
         FocusScope.of(context).requestFocus(FocusNode());
       }

@@ -3,45 +3,82 @@ import 'package:yanyou/models/Talk.dart';
 
 class TalkProvider extends ChangeNotifier {
   List<TalkModel> talksModel;
+  List<TalkModel> selfTalksModel;
 
-  initTalkModel(List json) {
+  initTalkModel(String type, List json) {
     List<TalkModel> tempModels = json
         .map((item) {
           return TalkModel.fromJson(item);
         })
         .cast<TalkModel>()
         .toList();
-    talksModel = tempModels;
+    if (type == 'self') {
+      selfTalksModel = tempModels;
+    } else {
+      talksModel = tempModels;
+    }
     notifyListeners();
   }
 
-  addTalkModel(List json) {
+  addTalkModel(String type, List json) {
     List<TalkModel> tempModels = json
         .map((item) {
           return TalkModel.fromJson(item);
         })
         .cast<TalkModel>()
         .toList();
-    talksModel.addAll(tempModels);
+    if (type == 'self') {
+      selfTalksModel.addAll(tempModels);
+    } else {
+      talksModel.addAll(tempModels);
+    }
     notifyListeners();
   }
 
-  updateLike(int talkId, Map<String, dynamic> json) {
+  updateLike(String type, int talkId, Map<String, dynamic> json) {
     Like like = Like.fromJson(json);
-    talksModel.forEach((talkModel) {
-      if (talkModel.talkId == talkId) {
-        talkModel.talkLike = like;
-      }
-    });
+    if (type == 'self') {
+      selfTalksModel.forEach((talkModel) {
+        if (talkModel.talkId == talkId) {
+          talkModel.talkLike = like;
+        }
+      });
+    } else {
+      talksModel.forEach((talkModel) {
+        if (talkModel.talkId == talkId) {
+          talkModel.talkLike = like;
+        }
+      });
+    }
+
     notifyListeners();
   }
 
-  updateComment(int talkId, int comment) {
-    talksModel.forEach((talkModel) {
+  updateComment(String type, int talkId, int comment) {
+    if (type == 'self') {
+      selfTalksModel.forEach((talkModel) {
+        if (talkModel.talkId == talkId) {
+          talkModel.comment = comment;
+        }
+      });
+    } else {
+      talksModel.forEach((talkModel) {
+        if (talkModel.talkId == talkId) {
+          talkModel.comment = comment;
+        }
+      });
+    }
+    notifyListeners();
+  }
+
+  deleteTalk(int talkId) {
+    int id;
+    selfTalksModel.forEach((talkModel) {
       if (talkModel.talkId == talkId) {
-        talkModel.comment = comment;
+        id = selfTalksModel.indexOf(talkModel);
       }
     });
+    selfTalksModel.removeAt(id);
     notifyListeners();
   }
 }

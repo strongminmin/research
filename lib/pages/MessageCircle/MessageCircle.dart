@@ -45,9 +45,9 @@ class _MessageCircleState extends State<MessageCircle> {
       );
       if (result['noerr'] == 0) {
         if (type == 'refresh') {
-          talkProvider.initTalkModel(result['data']);
+          talkProvider.initTalkModel('all', result['data']);
         } else {
-          talkProvider.addTalkModel(result['data']);
+          talkProvider.addTalkModel('all', result['data']);
         }
       }
     } catch (err) {
@@ -99,7 +99,10 @@ class _MessageCircleState extends State<MessageCircle> {
                     child: ListView.builder(
                       itemCount: talksModel.length,
                       itemBuilder: (context, index) {
-                        return MessageItem(talkModel: talksModel[index]);
+                        return MessageItem(
+                          talkModel: talksModel[index],
+                          type: 'all',
+                        );
                       },
                     ),
                   ),

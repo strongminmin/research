@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,8 +10,9 @@ import 'package:yanyou/provider/TalkProvider.dart';
 
 class MessageItem extends StatelessWidget {
   final TalkModel talkModel;
-  MessageItem({Key key, this.talkModel}) : super(key: key);
-
+  final String type;
+  MessageItem({Key key, this.talkModel, this.type}) : super(key: key);
+  final GlobalKey containerKey = GlobalKey();
   Function supportHander(BuildContext context) {
     return () async {
       try {
@@ -24,7 +26,7 @@ class MessageItem extends StatelessWidget {
           type: 0,
         );
         if (result['noerr'] == 0) {
-          talkProvider.updateLike(talkModel.talkId, result['data']);
+          talkProvider.updateLike(type, talkModel.talkId, result['data']);
         }
       } catch (err) {
         print(err);
@@ -37,72 +39,172 @@ class MessageItem extends StatelessWidget {
       showModalBottomSheet(
         context: context,
         builder: (context) {
-          return CommentList(talkId: talkModel.talkId);
+          return CommentList(
+            talkId: talkModel.talkId,
+            type: type,
+          );
         },
       );
     };
   }
 
+  Function showdeleteTalkCallback(BuildContext context) {
+    return () {
+      AwesomeDialog(
+          context: context,
+          dialogType: DialogType.INFO,
+          animType: AnimType.BOTTOMSLIDE,
+          tittle: '是否要删除这条心情？',
+          desc: '',
+          btnCancelOnPress: () {},
+          btnOkOnPress: () async {
+            await deleteTalkCallback(context);
+          }).show();
+    };
+  }
+
+  Future<void> deleteTalkCallback(BuildContext context) async {
+    try {
+      TalkProvider talkProvider = Provider.of<TalkProvider>(
+        context,
+        listen: false,
+      );
+      var result = await deleteTalk(
+        talkId: talkModel.talkId,
+      );
+      if (result['noerr'] == 0) {
+        talkProvider.deleteTalk(talkModel.talkId);
+      }
+      Toast.show(
+        result['message'],
+        context,
+        duration: Toast.LENGTH_LONG,
+        gravity: Toast.CENTER,
+      );
+      return;
+    } catch (err) {
+      print(err);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     num screenWidth = MediaQuery.of(context).size.width;
-    return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border(
-            bottom: BorderSide(
-          width: 0.5,
-          color: Colors.grey[200],
-        )),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          messageHeader(),
-          messageContent(screenWidth),
-          messageFooter(),
-        ],
-      ),
+    num screenHeight = MediaQuery.of(context).size.height;
+
+    return Stack(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+              width: 0.5,
+              color: Colors.grey[200],
+            )),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              messageHeader(),
+              messageContent(screenWidth),
+              messageFooter(),
+            ],
+          ),
+        ),
+        Positioned(
+          left: 0,
+          top: 0,
+          child: talkModel.talkStatus == 0
+              ? Container()
+              : Container(
+                  width: screenWidth,
+                  height: screenHeight,
+                  color: Color.fromARGB(50, 0, 0, 0),
+                  child: Stack(
+                    children: <Widget>[
+                      Positioned(
+                        top: 10,
+                        left: 40,
+                        child: Text(
+                          '该心情被禁用，请联系管理员查看相关情况。',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    ],
+                  )),
+        )
+      ],
     );
   }
 
   // 消息的头部信息-头像及用户名称
   Widget messageHeader() {
-    return Row(
-      children: <Widget>[
-        ClipOval(
-          child: CachedNetworkImage(
-            width: 40,
-            height: 40,
-            imageUrl: talkModel.userImage,
-            placeholder: (context, url) => CircularProgressIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.only(left: 4),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Text(
-                talkModel.userName,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
+    return Builder(
+      builder: (BuildContext context) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                ClipOval(
+                  child: CachedNetworkImage(
+                    width: 40,
+                    height: 40,
+                    imageUrl: talkModel.userImage,
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
                 ),
-              ),
-              Text(
-                talkModel.createTime,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
+                Container(
+                  margin: EdgeInsets.only(left: 4),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Text(
+                        talkModel.userName,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        talkModel.createTime,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              )
-            ],
-          ),
-        )
-      ],
+              ],
+            ),
+            type == 'all'
+                ? Container()
+                : GestureDetector(
+                    onTap: showdeleteTalkCallback(context),
+                    child: Container(
+                      width: 26,
+                      height: 26,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(13),
+                      ),
+                      child: Icon(
+                        Icons.clear,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+          ],
+        );
+      },
     );
   }
 
@@ -207,7 +309,7 @@ class MessageItem extends StatelessWidget {
     );
   }
 
-  //响应式计算图片的大小
+  //响应式计���图片的大小
   num computeImageSize(num screenWidth) {
     num width;
     if (talkModel.talkImages.length == 1) {
