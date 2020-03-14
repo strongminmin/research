@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:flutter_easyrefresh/material_header.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yanyou/api/Advisory.dart';
 import 'package:yanyou/api/Banner.dart';
 import 'package:yanyou/api/Check.dart';
@@ -25,9 +28,12 @@ class _HomeState extends State<Home> {
   int page = 1;
   int count = 10;
   bool checked = false;
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   @override
   void initState() {
     super.initState();
+    cacheToUser();
     requestBanner();
     requestAdvisoryList('refresh', page++, count);
     requestCheck();
@@ -48,6 +54,20 @@ class _HomeState extends State<Home> {
       }
     } catch (err) {
       print(err);
+    }
+  }
+
+  // 本地缓存中获取用户
+  Future<void> cacheToUser() async {
+    UserProvider userProvider = Provider.of<UserProvider>(
+      context,
+      listen: false,
+    );
+    SharedPreferences prefs = await _prefs;
+    String userInfoJson = prefs.getString('user');
+    if (userInfoJson != null) {
+      Map userInfo = jsonDecode(userInfoJson);
+      await userProvider.updateUserInfo(userInfo);
     }
   }
 
