@@ -8,7 +8,7 @@ class UserProvider extends ChangeNotifier {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   UserProvider() {
     this.getUserInfoFromShare().then((user) {
-      // userInfo = user;
+      userInfo = user;
       notifyListeners();
     });
   }

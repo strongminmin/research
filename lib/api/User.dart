@@ -37,8 +37,11 @@ Future<dynamic> login({
 Future<dynamic> updateUserInfo({
   int userId,
   String key,
-  String value,
+  dynamic value,
 }) async {
+  if (key == 'user_image') {
+    value = await MultipartFile.fromFile(value.path);
+  }
   FormData formData = FormData.fromMap({
     'user_id': userId,
     'key': key,
