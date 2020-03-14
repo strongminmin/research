@@ -67,7 +67,7 @@ class Header extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  '周慧敏',
+                                  userModel.userName,
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -77,7 +77,7 @@ class Header extends StatelessWidget {
                                   width: screenWidth - 100,
                                   margin: EdgeInsets.only(top: 4),
                                   child: Text(
-                                    '这个人很懒，什么也没留下,这个人很懒，什么也没留下这个人很懒，什么也没留下',
+                                    userModel.userDescription,
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey[200],

@@ -1,4 +1,3 @@
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -6,8 +5,6 @@ import 'package:toast/toast.dart';
 import 'package:yanyou/api/Check.dart';
 import 'package:yanyou/models/UserModel.dart';
 import 'package:yanyou/provider/UserProvider.dart';
-import 'package:yanyou/routes/Application.dart';
-import 'package:yanyou/routes/Routes.dart';
 
 class CheckPage extends StatefulWidget {
   CheckPage({Key key}) : super(key: key);
