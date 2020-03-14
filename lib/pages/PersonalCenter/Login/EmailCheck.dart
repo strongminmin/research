@@ -1,7 +1,11 @@
 import 'dart:async';
 
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
+import 'package:yanyou/api/Email.dart';
+import 'package:yanyou/models/UserModel.dart';
+import 'package:yanyou/routes/Application.dart';
 import 'package:yanyou/routes/Routes.dart';
 
 class EmailCheck extends StatefulWidget {
@@ -32,7 +36,7 @@ class _EmailCheckState extends State<EmailCheck> {
   final String regexEmail =
       "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*\$";
   String _email;
-  // UserModel userModel = UserModel(userid: 0);
+  UserModel userModel = UserModel(userId: 0);
 
   @override
   void initState() {
@@ -83,7 +87,7 @@ class _EmailCheckState extends State<EmailCheck> {
     if (isSend) return;
     if (isEmail(_email)) {
       // 掉后端接口发送验证码
-      bool result = await sendEmail();
+      bool result = await sendEmailRequest();
       if (result) {
         // 开启倒计时
         startTimer();
@@ -102,21 +106,22 @@ class _EmailCheckState extends State<EmailCheck> {
   }
 
   // 调邮箱发送验证码请求
-  Future<bool> sendEmail() async {
+  Future<bool> sendEmailRequest() async {
     try {
-      // var result = await emailIdentity(userEmail: _email, type: arguments);
-      // Toast.show(
-      //   result['message'],
-      //   context,
-      //   duration: Toast.LENGTH_SHORT,
-      //   gravity: Toast.CENTER,
-      // );
-      // if (result['noerr'] == 0) {
-      //   setState(() {
-      //     userModel = UserModel.fromJson(result['data']);
-      //   });
-      //   return true;
-      // }
+      var result = await sendEmail(userEmail: _email, type: widget.type);
+      Toast.show(
+        result['message'],
+        context,
+        duration: Toast.LENGTH_SHORT,
+        gravity: Toast.CENTER,
+      );
+      print(result);
+      if (result['noerr'] == 0 && widget.type == 'resetPassword') {
+        setState(() {
+          userModel = UserModel.fromJson(result['data']);
+        });
+      }
+      return true;
     } catch (err) {
       print(err);
     }
@@ -126,29 +131,34 @@ class _EmailCheckState extends State<EmailCheck> {
   // 验证验证码是否正确
   Function checkIdentityCallback(nextPage) {
     return () async {
-      // 1、发送请求验证验证码是否正确
-      // 2、如果正确跳转到修改密码界面
-      print('验证验证码是否正确');
       try {
-        // String identity = _identityCode.text;
-        // var result = await checkIdentity(
-        //   userEmail: _email,
-        //   identity: identity,
-        // );
-        // if (result['noerr'] == 0) {
-        //   Future.delayed(Duration(seconds: 1)).then((value) {
-        //     Navigator.of(context).pushNamed(nextPage, arguments: {
-        //       'email': _email,
-        //       'userid': userModel?.userid,
-        //     });
-        //   });
-        // }
-        // Toast.show(
-        //   result['message'],
-        //   context,
-        //   duration: Toast.LENGTH_SHORT,
-        //   gravity: Toast.CENTER,
-        // );
+        String identity = _identityCode.text;
+        var result = await checkIdentity(
+          userEmail: _email,
+          identity: identity,
+        );
+        if (result['noerr'] == 0) {
+          Future.delayed(Duration(seconds: 1)).then((value) {
+            String pageUrl;
+            if (widget.type == 'register') {
+              print(_emialControoler.text);
+              pageUrl = '$nextPage?userEmail=${_emialControoler.text}';
+            } else {
+              pageUrl = '$nextPage?userId=${userModel.userId}';
+            }
+            Application.router.navigateTo(
+              context,
+              pageUrl,
+              transition: TransitionType.native,
+            );
+          });
+        }
+        Toast.show(
+          result['message'],
+          context,
+          duration: Toast.LENGTH_SHORT,
+          gravity: Toast.CENTER,
+        );
       } catch (err) {
         print(err);
       }
@@ -189,7 +199,7 @@ class _EmailCheckState extends State<EmailCheck> {
                       child: Text(
                         countDown == 60 ? '发送验证码' : countDown.toString(),
                         style: TextStyle(
-                          color: isSend ? Colors.grey : Colors.orange,
+                          color: isSend ? Colors.grey : Colors.blue[400],
                         ),
                       ),
                     ),
@@ -226,7 +236,13 @@ class _EmailCheckState extends State<EmailCheck> {
                     Expanded(
                       child: RaisedButton(
                         padding: EdgeInsets.all(15.0),
-                        child: Text("下一步"),
+                        child: Text(
+                          "下一步",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                         color: Theme.of(context).primaryColor,
                         textColor: Colors.white,
                         onPressed: checkIdentityCallback(nextPage),

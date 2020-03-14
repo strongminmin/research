@@ -247,6 +247,7 @@ Handler emailCheckHandler = Handler(
 // 注册
 Handler registerUserHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List> params) {
+    print(params);
     String userEmail = params['userEmail'][0];
     return RegisterUser(userEmail: userEmail);
   },
@@ -254,7 +255,7 @@ Handler registerUserHandler = Handler(
 // 重置密码
 Handler resetPasswordHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, List> params) {
-    String userId = params['userId'][0];
+    int userId = int.parse(params['userId'][0]);
     return ResetPassword(userId: userId);
   },
 );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
+import 'package:yanyou/api/User.dart';
 
 class RegisterUser extends StatefulWidget {
   final String userEmail;
@@ -55,23 +56,24 @@ class _RegisterUserState extends State<RegisterUser> {
   Future<void> registerAction() async {
     if ((_formKey.currentState as FormState).validate()) {
       try {
-        // var result = await register(
-        //   userName: _usernameController.text,
-        //   userPassword: _passwordController.text,
-        //   userEmail: widget.userEmail,
-        // );
-        // if (result['noerr'] == 0) {
-        //   Future.delayed(Duration(seconds: 1)).then((value) {
-        //     Navigator.of(context).pop();
-        //     Navigator.of(context).pop();
-        //   });
-        // }
-        // Toast.show(
-        //   result['message'],
-        //   context,
-        //   duration: Toast.LENGTH_SHORT,
-        //   gravity: Toast.CENTER,
-        // );
+        print(widget.userEmail);
+        var result = await registerUser(
+          userName: _usernameController.text,
+          password: _passwordController.text,
+          userEmail: widget.userEmail,
+        );
+        if (result['noerr'] == 0) {
+          Future.delayed(Duration(seconds: 1)).then((value) {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          });
+        }
+        Toast.show(
+          result['message'],
+          context,
+          duration: Toast.LENGTH_SHORT,
+          gravity: Toast.CENTER,
+        );
       } catch (err) {
         print(err);
       }
@@ -92,104 +94,80 @@ class _RegisterUserState extends State<RegisterUser> {
         child: Column(
           children: <Widget>[
             Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: TextFormField(
-                        controller: _usernameController,
-                        decoration: InputDecoration(
-                          labelText: '用户名',
-                          hintText: '请输入用户名',
-                          hintStyle: TextStyle(
-                            fontSize: 12,
-                          ),
-                          prefixIcon: Icon(Icons.person),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                        validator: usernameValidator,
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(left: 16.0, right: 16.0),
-                      margin: EdgeInsets.only(top: 8),
-                      child: TextFormField(
-                        controller: _passwordController,
-                        obscureText: hidePassword,
-                        decoration: InputDecoration(
-                          labelText: '密码',
-                          hintText: '包括：数字、字母大小写、特殊符号且长度大于8位',
-                          hintStyle: TextStyle(
-                            fontSize: 12,
-                          ),
-                          prefixIcon: Icon(Icons.lock),
-                          suffix: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                hidePassword = !hidePassword;
-                              });
-                            },
-                            child: Icon(
-                              Icons.remove_red_eye,
-                              size: 20,
-                              color: hidePassword ? Colors.grey : Colors.orange,
-                            ),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                        validator: passwordValidator,
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      margin: EdgeInsets.only(top: 8),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: RaisedButton(
-                              padding: EdgeInsets.all(15.0),
-                              child: Text("登录"),
-                              color: Theme.of(context).primaryColor,
-                              textColor: Colors.white,
-                              onPressed: registerAction,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                )),
-            Container(
-              margin: EdgeInsets.only(top: 12),
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              key: _formKey,
+              child: Column(
                 children: <Widget>[
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushNamed('emailCheck', arguments: 'register');
-                    },
-                    child: Text(
-                      '注册',
-                      style: TextStyle(color: Colors.orange),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: TextFormField(
+                      controller: _usernameController,
+                      decoration: InputDecoration(
+                        labelText: '用户名',
+                        hintText: '请输入用户名',
+                        hintStyle: TextStyle(
+                          fontSize: 12,
+                        ),
+                        prefixIcon: Icon(Icons.person),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      validator: usernameValidator,
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushNamed('emailCheck', arguments: 'forgetPassword');
-                    },
-                    child: Text(
-                      '找回密码',
-                      style: TextStyle(
-                        color: Colors.red,
+                  Container(
+                    padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                    margin: EdgeInsets.only(top: 8),
+                    child: TextFormField(
+                      controller: _passwordController,
+                      obscureText: hidePassword,
+                      decoration: InputDecoration(
+                        labelText: '密码',
+                        hintText: '包括：数字、字母大小写、特殊符号且长度大于8位',
+                        hintStyle: TextStyle(
+                          fontSize: 12,
+                        ),
+                        prefixIcon: Icon(Icons.lock),
+                        suffix: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              hidePassword = !hidePassword;
+                            });
+                          },
+                          child: Icon(
+                            Icons.remove_red_eye,
+                            size: 20,
+                            color: hidePassword ? Colors.grey : Colors.orange,
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                       ),
+                      validator: passwordValidator,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    margin: EdgeInsets.only(top: 8),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: RaisedButton(
+                            padding: EdgeInsets.all(15.0),
+                            child: Text(
+                              "注册",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            color: Theme.of(context).primaryColor,
+                            textColor: Colors.white,
+                            onPressed: registerAction,
+                          ),
+                        ),
+                      ],
                     ),
                   )
                 ],

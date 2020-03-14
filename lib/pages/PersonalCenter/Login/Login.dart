@@ -2,6 +2,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
+import 'package:yanyou/api/User.dart';
 import 'package:yanyou/provider/UserProvider.dart';
 import 'package:yanyou/routes/Application.dart';
 import 'package:yanyou/routes/Routes.dart';
@@ -63,23 +64,23 @@ class _LoginState extends State<Login> {
         String userEmail = _emailController.text;
         String password = _passwordController.text;
         print('登录');
-        // var result = await login(
-        //   userEmail: userEmail,
-        //   userPassword: password,
-        // );
-        // if (result['noerr'] == 0) {
-        //   // 登录成功
-        //   await userProvider.updateUserInfo(result['data']);
-        //   Future.delayed(Duration(seconds: 2)).then((value) {
-        //     Navigator.of(context).pop();
-        //   });
-        // }
-        // Toast.show(
-        //   result['message'],
-        //   context,
-        //   duration: Toast.LENGTH_LONG,
-        //   gravity: Toast.CENTER,
-        // );
+        var result = await login(
+          userEmail: userEmail,
+          password: password,
+        );
+        if (result['noerr'] == 0) {
+          // 登录成功
+          await userProvider.updateUserInfo(result['data']);
+          Future.delayed(Duration(seconds: 2)).then((value) {
+            Navigator.of(context).pop();
+          });
+        }
+        Toast.show(
+          result['message'],
+          context,
+          duration: Toast.LENGTH_LONG,
+          gravity: Toast.CENTER,
+        );
       } catch (err) {
         print(err);
       }
@@ -161,7 +162,13 @@ class _LoginState extends State<Login> {
                           Expanded(
                             child: RaisedButton(
                               padding: EdgeInsets.all(15.0),
-                              child: Text("登录"),
+                              child: Text(
+                                "登录",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                               color: Theme.of(context).primaryColor,
                               textColor: Colors.white,
                               onPressed: loginAction,

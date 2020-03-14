@@ -3,11 +3,11 @@ import './config.dart';
 
 Dio _dio = new Dio();
 
-Future<dynamic> registerUser(
+Future<dynamic> registerUser({
   String userEmail,
   String userName,
   String password,
-) async {
+}) async {
   FormData formData = FormData.fromMap({
     'user_email': userEmail,
     'user_name': userName,
@@ -20,10 +20,10 @@ Future<dynamic> registerUser(
   return response.data;
 }
 
-Future<dynamic> login(
+Future<dynamic> login({
   String userEmail,
   String password,
-) async {
+}) async {
   Response response = await _dio.get(
     '$BASE_URL/user/login',
     queryParameters: {
@@ -34,11 +34,11 @@ Future<dynamic> login(
   return response.data;
 }
 
-Future<dynamic> updateUserInfo(
+Future<dynamic> updateUserInfo({
   int userId,
   String key,
   String value,
-) async {
+}) async {
   FormData formData = FormData.fromMap({
     'user_id': userId,
     'key': key,

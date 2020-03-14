@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
+import 'package:yanyou/api/User.dart';
 
 class ResetPassword extends StatefulWidget {
-  final String userId;
+  final int userId;
   ResetPassword({Key key, this.userId}) : super(key: key);
   _ResetPasswordState createState() => _ResetPasswordState();
 }
@@ -44,23 +45,23 @@ class _ResetPasswordState extends State<ResetPassword> {
         );
         return;
       }
-      // var result = await updateUserInfo(
-      //   userId: widget.userId,
-      //   key: 'user_password',
-      //   value: password,
-      // );
-      // if (result['noerr'] == 0) {
-      //   Future.delayed(Duration(seconds: 1)).then((value) {
-      //     Navigator.of(context).pop();
-      //     Navigator.of(context).pop();
-      //   });
-      // }
-      // Toast.show(
-      //   result['message'],
-      //   context,
-      //   duration: Toast.LENGTH_SHORT,
-      //   gravity: Toast.CENTER,
-      // );
+      var result = await updateUserInfo(
+        userId: widget.userId,
+        key: 'user_password',
+        value: password,
+      );
+      if (result['noerr'] == 0) {
+        Future.delayed(Duration(seconds: 1)).then((value) {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        });
+      }
+      Toast.show(
+        result['message'],
+        context,
+        duration: Toast.LENGTH_SHORT,
+        gravity: Toast.CENTER,
+      );
     } catch (err) {
       print(err);
     }
@@ -124,10 +125,13 @@ class _ResetPasswordState extends State<ResetPassword> {
                     Expanded(
                       child: RaisedButton(
                         padding: EdgeInsets.all(16.0),
-                        child: Text("更新密码",
-                            style: TextStyle(
-                              fontSize: 16,
-                            )),
+                        child: Text(
+                          "重置密码",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                         color: Theme.of(context).primaryColor,
                         textColor: Colors.white,
                         onPressed: updatePassword,
