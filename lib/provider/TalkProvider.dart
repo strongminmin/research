@@ -15,7 +15,12 @@ class TalkProvider extends ChangeNotifier {
     if (type == 'self') {
       selfTalksModel = tempModels;
     } else {
-      talksModel = tempModels;
+      print(tempModels.where((item) {
+        return item.talkStatus == 0;
+      }));
+      talksModel = tempModels.where((item) {
+        return item.talkStatus == 0;
+      }).toList();
     }
     notifyListeners();
   }
@@ -30,7 +35,9 @@ class TalkProvider extends ChangeNotifier {
     if (type == 'self') {
       selfTalksModel.addAll(tempModels);
     } else {
-      talksModel.addAll(tempModels);
+      talksModel.addAll(tempModels.where((item) {
+        return item.talkStatus == 0;
+      }).toList());
     }
     notifyListeners();
   }
