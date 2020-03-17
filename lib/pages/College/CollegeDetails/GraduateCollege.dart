@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:yanyou/provider/CollegeProvider.dart';
 
 class GraduateCollege extends StatefulWidget {
   final String collegeName;
@@ -9,15 +11,7 @@ class GraduateCollege extends StatefulWidget {
 
 class _GraduateCollegeState extends State<GraduateCollege> {
   WebViewController _webViewcontroller;
-  String url = 'https://www.tsinghua.edu.cn/publish/yjsy/686/';
   String title = '研究生院';
-  @override
-  void initState() {
-    super.initState();
-    fetchRequest();
-  }
-
-  Future<void> fetchRequest() async {}
   void webViewFinishedHandler(url) {
     _webViewcontroller.evaluateJavascript('document.title').then((result) {
       setState(() {
@@ -33,13 +27,19 @@ class _GraduateCollegeState extends State<GraduateCollege> {
         title: Text(title),
         centerTitle: true,
       ),
-      body: WebView(
-        initialUrl: url,
-        javascriptMode: JavascriptMode.unrestricted, //JS执行模式 是否允许JS执行
-        onWebViewCreated: (controller) {
-          _webViewcontroller = controller;
+      body: Consumer<CollegeProvider>(
+        builder: (context, collegeProvider, child) {
+          String url = collegeProvider
+              .collegeDetailsModel.collegeGraduate['graduateUrl'][0][0];
+          return WebView(
+            initialUrl: url,
+            javascriptMode: JavascriptMode.unrestricted, //JS执行模式 是否允许JS执行
+            onWebViewCreated: (controller) {
+              _webViewcontroller = controller;
+            },
+            onPageFinished: webViewFinishedHandler,
+          );
         },
-        onPageFinished: webViewFinishedHandler,
       ),
     );
   }

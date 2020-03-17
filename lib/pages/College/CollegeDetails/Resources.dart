@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:yanyou/provider/CollegeProvider.dart';
 
 class Resources extends StatefulWidget {
   final String collegeName;
@@ -73,14 +75,6 @@ class _ResourcesState extends State<Resources> {
       ]
     },
   ];
-  @override
-  void initState() {
-    super.initState();
-    fetchRequest();
-  }
-
-  // 通过学校名称去拿资料
-  Future<void> fetchRequest() async {}
 
   Function callCoundDisk(String url) {
     return () async {
@@ -103,53 +97,35 @@ class _ResourcesState extends State<Resources> {
   @override
   Widget build(BuildContext context) {
     num screenWidth = MediaQuery.of(context).size.width;
+    num screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text('真题资料'),
         centerTitle: true,
       ),
-      body: Container(
-        width: screenWidth,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: contentWidget(),
-          ),
-        ),
+      body: Consumer<CollegeProvider>(
+        builder: (context, collegeProvider, child) {
+          List courceResources =
+              collegeProvider.collegeDetailsModel.collegeGraduate['resources'];
+          return Container(
+            width: screenWidth,
+            height: screenHeight,
+            color: Colors.blue[100],
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: contentWidget(courceResources),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
-  List<Widget> contentWidget() {
-    List<Widget> courcesWidget = courceResources
-        .map((cource) {
-          List<Widget> resources = cource['resource']
-              .map((source) {
-                return GestureDetector(
-                  onTap: callCoundDisk(source['url']),
-                  child: Container(
-                    padding: EdgeInsets.all(4),
-                    margin: EdgeInsets.only(bottom: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[400],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SingleChildScrollView(
-                          child: SelectableText(
-                            '链接：${source['url']}',
-                          ),
-                        ),
-                        SelectableText('密码：${source['ident']}'),
-                      ],
-                    ),
-                  ),
-                );
-              })
-              .cast<Widget>()
-              .toList();
+  List<Widget> contentWidget(List courceResources) {
+    return courceResources
+        .map((resource) {
           return Container(
             color: Colors.blue[100],
             padding: EdgeInsets.all(16),
@@ -159,7 +135,7 @@ class _ResourcesState extends State<Resources> {
                 Container(
                   margin: EdgeInsets.only(bottom: 8),
                   child: Text(
-                    cource['cource'],
+                    resource[0],
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -167,9 +143,27 @@ class _ResourcesState extends State<Resources> {
                   ),
                 ),
                 Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: resources,
+                  child: GestureDetector(
+                    onTap: callCoundDisk(resource[1]),
+                    child: Container(
+                      padding: EdgeInsets.all(4),
+                      margin: EdgeInsets.only(bottom: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[400],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SingleChildScrollView(
+                            child: SelectableText(
+                              '链接：${resource[1]}',
+                            ),
+                          ),
+                          SelectableText('密码：${resource[2]}'),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -178,6 +172,5 @@ class _ResourcesState extends State<Resources> {
         })
         .cast<Widget>()
         .toList();
-    return courcesWidget;
   }
 }

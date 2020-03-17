@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:yanyou/provider/CollegeProvider.dart';
 
 class Experience extends StatefulWidget {
-  final String collegeName;
-  Experience({Key key, this.collegeName}) : super(key: key);
+  Experience({Key key}) : super(key: key);
   _ExperienceState createState() => _ExperienceState();
 }
 
@@ -24,40 +25,10 @@ class _ExperienceState extends State<Experience> {
   @override
   void initState() {
     super.initState();
-    fetchRequest();
   }
 
-  Future<void> fetchRequest() async {}
-  List<Widget> experiencesWidget(num screenWidth) {
+  List<Widget> experiencesWidget(num screenWidth, List experiences) {
     return experiences.map((exper) {
-      List<Widget> experWidget = exper.keys.map((key) {
-        return Container(
-          margin: EdgeInsets.only(top: 4),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                '$key：',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Container(
-                width: screenWidth - 100,
-                margin: EdgeInsets.only(top: 2),
-                child: Text(
-                  exper[key],
-                  maxLines: 3,
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-              )
-            ],
-          ),
-        );
-      }).toList();
       return Container(
         padding: EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
@@ -67,7 +38,60 @@ class _ExperienceState extends State<Experience> {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: experWidget,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(top: 4),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Q：',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Container(
+                    width: screenWidth - 100,
+                    margin: EdgeInsets.only(top: 2),
+                    child: Text(
+                      exper[0],
+                      maxLines: 3,
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 4),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'A：',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Container(
+                    width: screenWidth - 100,
+                    margin: EdgeInsets.only(top: 2),
+                    child: Text(
+                      exper[1],
+                      maxLines: 3,
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
         ),
       );
     }).toList();
@@ -82,17 +106,23 @@ class _ExperienceState extends State<Experience> {
         title: Text('考研经验'),
         centerTitle: true,
       ),
-      body: Container(
-        width: screenWidth,
-        height: screenHeight,
-        color: Colors.white,
-        padding: EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: experiencesWidget(screenWidth),
-          ),
-        ),
+      body: Consumer<CollegeProvider>(
+        builder: (context, collegeProvider, child) {
+          List experiences =
+              collegeProvider.collegeDetailsModel.collegeGraduate['experience'];
+          return Container(
+            width: screenWidth,
+            height: screenHeight,
+            color: Colors.white,
+            padding: EdgeInsets.all(16),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: experiencesWidget(screenWidth, experiences),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

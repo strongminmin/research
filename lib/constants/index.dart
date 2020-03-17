@@ -28,46 +28,55 @@ List<Map> collegeGrid = [
     'text': '研究生院',
     'url': 'assets/images/xuexiao.png',
     'page': Routes.graduateCollegePage,
+    'type': 'graduateUrl',
   },
   {
     'text': '报录比',
     'url': 'assets/images/bili.png',
     'page': Routes.reportRatioPage,
+    'type': 'reportRatio',
   },
   {
     'text': '考研经验',
     'url': 'assets/images/jingyan.png',
     'page': Routes.experiencePage,
+    'type': 'experience',
   },
   {
     'text': '直通学长',
     'url': 'assets/images/xuesheng.png',
     'page': Routes.seniorPage,
+    'type': 'seniors',
   },
   {
     'text': '研究生导师',
     'url': 'assets/images/daoshi.png',
     'page': Routes.totorPage,
+    'type': 'tutors',
   },
   {
     'text': '真题资料',
     'url': 'assets/images/ziyuan.png',
     'page': Routes.resourcesPage,
+    'type': 'resources',
   },
   {
     'text': '招生简章',
     'url': 'assets/images/jianzhang.png',
     'page': Routes.admissionsPage,
+    'type': 'intor',
   },
   {
     'text': '历年分数线',
     'url': 'assets/images/fenshuxian.png',
     'page': Routes.scoreLinePage,
+    'type': 'sourceLine'
   },
   {
     'text': '考研调剂',
     'url': 'assets/images/tiaoji.png',
     'page': Routes.transferPage,
+    'type': 'transferUrl'
   },
 ];
 

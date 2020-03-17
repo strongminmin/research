@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:yanyou/provider/CollegeProvider.dart';
 
 class Totor extends StatefulWidget {
   final String collegeName;
@@ -56,20 +58,27 @@ class _TotorState extends State<Totor> {
   Widget build(BuildContext context) {
     num screenWidth = MediaQuery.of(context).size.width;
     childrenWidget.add(titleWidget(screenWidth));
-    childrenWidget.addAll(contentWidget(screenWidth));
+
     return Scaffold(
       appBar: AppBar(
         title: Text('研究生导师'),
         centerTitle: true,
       ),
-      body: Container(
-        width: screenWidth,
-        padding: EdgeInsets.only(bottom: 16),
-        child: SingleChildScrollView(
-          child: Column(
-            children: childrenWidget,
-          ),
-        ),
+      body: Consumer<CollegeProvider>(
+        builder: (context, collegeProvider, child) {
+          List totorsInfo =
+              collegeProvider.collegeDetailsModel.collegeGraduate['tutors'];
+          childrenWidget.addAll(contentWidget(screenWidth, totorsInfo));
+          return Container(
+            width: screenWidth,
+            padding: EdgeInsets.only(bottom: 16),
+            child: SingleChildScrollView(
+              child: Column(
+                children: childrenWidget,
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -97,7 +106,7 @@ class _TotorState extends State<Totor> {
     );
   }
 
-  List<Widget> contentWidget(num screenWidth) {
+  List<Widget> contentWidget(num screenWidth, List totorsInfo) {
     List<Widget> totorsWidget = totorsInfo.map((totor) {
       return Container(
         padding: EdgeInsets.symmetric(vertical: 8),
@@ -111,11 +120,11 @@ class _TotorState extends State<Totor> {
           children: <Widget>[
             Container(
               width: screenWidth / 2,
-              child: Center(child: Text(totor['name'])),
+              child: Center(child: Text(totor[0])),
             ),
             Container(
               width: screenWidth / 2,
-              child: Center(child: Text(totor['number'])),
+              child: Center(child: Text(totor[1])),
             ),
           ],
         ),

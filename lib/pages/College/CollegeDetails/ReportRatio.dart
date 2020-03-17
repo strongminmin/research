@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:yanyou/provider/CollegeProvider.dart';
 
 class ReportRatio extends StatefulWidget {
   final String collegeName;
@@ -7,20 +9,6 @@ class ReportRatio extends StatefulWidget {
 }
 
 class _ReportRatioState extends State<ReportRatio> {
-  Map<String, String> ratios = {
-    '2020': '10:1',
-    '2019': '10:1',
-    '2018': '10:1',
-    '2017': '10:1',
-    '2016': '10:1',
-  };
-  @override
-  void initState() {
-    super.initState();
-    fetchRequest();
-  }
-
-  Future<void> fetchRequest() async {}
   @override
   Widget build(BuildContext context) {
     num screenWidth = MediaQuery.of(context).size.width;
@@ -29,20 +17,26 @@ class _ReportRatioState extends State<ReportRatio> {
         title: Text('报录比'),
         centerTitle: true,
       ),
-      body: Container(
-        width: screenWidth,
-        padding: EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          child: Column(
-            children: ratioContent(screenWidth),
-          ),
-        ),
+      body: Consumer<CollegeProvider>(
+        builder: (context, collegeProvider, child) {
+          List ratios = collegeProvider
+              .collegeDetailsModel.collegeGraduate['reportRatio'];
+          return Container(
+            width: screenWidth,
+            padding: EdgeInsets.all(16),
+            child: SingleChildScrollView(
+              child: Column(
+                children: ratioContent(screenWidth, ratios),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
-  List<Widget> ratioContent(num screenWidth) {
-    return ratios.keys.map((year) {
+  List<Widget> ratioContent(num screenWidth, List ratios) {
+    return ratios.map((ratio) {
       return Container(
         width: screenWidth,
         padding: EdgeInsets.all(16),
@@ -55,7 +49,7 @@ class _ReportRatioState extends State<ReportRatio> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              year,
+              ratio[0],
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -68,7 +62,7 @@ class _ReportRatioState extends State<ReportRatio> {
               ),
             ),
             Text(
-              ratios[year],
+              ratio[1],
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,

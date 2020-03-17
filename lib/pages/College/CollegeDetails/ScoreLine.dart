@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:yanyou/provider/CollegeProvider.dart';
 
 class ScoreLine extends StatefulWidget {
   final String collegeName;
@@ -7,21 +9,6 @@ class ScoreLine extends StatefulWidget {
 }
 
 class _ScoreLineState extends State<ScoreLine> {
-  Map yearScoreLine = {
-    '2020': '386',
-    '2019': '386',
-    '2018': '386',
-    '2017': '386',
-    '2016': '386',
-    '2015': '386',
-  };
-  @override
-  void initState() {
-    super.initState();
-    fetchRequest();
-  }
-
-  Future<void> fetchRequest() async {}
   @override
   Widget build(BuildContext context) {
     num screenWidth = MediaQuery.of(context).size.width;
@@ -30,17 +17,23 @@ class _ScoreLineState extends State<ScoreLine> {
         title: Text('历年分数线'),
         centerTitle: true,
       ),
-      body: Container(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: scoreLineContent(screenWidth),
-        ),
+      body: Consumer<CollegeProvider>(
+        builder: (context, collegeProvider, child) {
+          List yearScoreLine =
+              collegeProvider.collegeDetailsModel.collegeGraduate['sourceLine'];
+          return Container(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: scoreLineContent(screenWidth, yearScoreLine),
+            ),
+          );
+        },
       ),
     );
   }
 
-  List<Widget> scoreLineContent(num screenWidth) {
-    return yearScoreLine.keys.map((year) {
+  List<Widget> scoreLineContent(num screenWidth, List yearScoreLine) {
+    return yearScoreLine.map((scoreLine) {
       return Container(
         width: screenWidth,
         padding: EdgeInsets.all(16),
@@ -53,7 +46,7 @@ class _ScoreLineState extends State<ScoreLine> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              year,
+              scoreLine[0],
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -66,7 +59,7 @@ class _ScoreLineState extends State<ScoreLine> {
               ),
             ),
             Text(
-              '${yearScoreLine[year]}分',
+              '${scoreLine[1]}分',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:yanyou/pages/index.dart';
+import 'package:yanyou/provider/CollegeProvider.dart';
 import 'package:yanyou/provider/TalkProvider.dart';
 import 'package:yanyou/provider/UserProvider.dart';
 import 'package:yanyou/routes/Application.dart';
@@ -15,6 +16,8 @@ void main() {
         providers: [
           ChangeNotifierProvider<TalkProvider>(create: (_) => TalkProvider()),
           ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
+          ChangeNotifierProvider<CollegeProvider>(
+              create: (_) => CollegeProvider()),
         ],
         child: MyApp(),
       ),

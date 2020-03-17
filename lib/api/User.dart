@@ -29,6 +29,7 @@ Future<dynamic> login({
     queryParameters: {
       'user_email': userEmail,
       'user_password': password,
+      'platform': 'mobile'
     },
   );
   return response.data;
