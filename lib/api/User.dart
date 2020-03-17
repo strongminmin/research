@@ -24,14 +24,12 @@ Future<dynamic> login({
   String userEmail,
   String password,
 }) async {
-  Response response = await _dio.get(
-    '$BASE_URL/user/login',
-    queryParameters: {
-      'user_email': userEmail,
-      'user_password': password,
-      'platform': 'mobile'
-    },
-  );
+  FormData formData = FormData.fromMap({
+    'user_email': userEmail,
+    'user_password': password,
+    'platform': 'mobile'
+  });
+  Response response = await _dio.post('$BASE_URL/user/login', data: formData);
   return response.data;
 }
 
